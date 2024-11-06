@@ -4,4 +4,4 @@
 - [ ] ~~Практическая работа №4~~
 - [x] Практическая работа №5 ([чат в ChatGPT](https://chatgpt.com/share/672b9959-c220-8013-8f15-ebafea95ce01))
 - [x] Практическая работа №6 ([чат в ChatGPT](https://chatgpt.com/share/672b99ed-f82c-8013-a309-859016326ea9))
-- [ ] Практическая работа №7
+- [x] Практическая работа №7 ([чат в ChatGPT](https://chatgpt.com/share/672b9f72-f068-8013-b379-a9de7f18d8a4))
