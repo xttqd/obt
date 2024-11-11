@@ -1,5 +1,4 @@
-# ![(Download)](https://custom-icon-badges.demolab.com/badge/-%D0%A1%D0%BA%D0%B0%D1%87%D0%B0%D1%82%D1%8C%20%D1%80%D0%B5%D0%BF%D0%BE%D0%B7%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%B9-198754?style=for-the-badge&logo=download&logoColor=white&link=https%3A%2F%2Fgithub.com%2Fxttqd%2Fobt%2Freleases%2Fdownload%2Flatest%2Fmaster.zip) ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/xttqd/obt/total?style=for-the-badge&label=%D0%A1%D0%BA%D0%B0%D1%87%D0%B0%D0%BD%D0%BE%20%D1%80%D0%B0%D0%B7&labelColor=%23198754&color=%23115e3a&link=https%3A%2F%2Fgithub.com%2Fxttqd%2Fobt%2Freleases%2Fdownload%2Flatest%2Fmaster.zip)
-
+# <a href="https://github.com/xttqd/obt/releases/download/latest/master.zip"><img alt="Download repository" src="https://custom-icon-badges.demolab.com/badge/-%D0%A1%D0%BA%D0%B0%D1%87%D0%B0%D1%82%D1%8C%20%D1%80%D0%B5%D0%BF%D0%BE%D0%B7%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%B9-198754?style=for-the-badge&logo=download&logoColor=white"></a> ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/xttqd/obt/total?style=for-the-badge&label=%D0%A1%D0%BA%D0%B0%D1%87%D0%B0%D0%BD%D0%BE%20%D1%80%D0%B0%D0%B7&labelColor=%23198754&color=%23115e3a)
 
 - [x] Практическая работа №5
 - [x] Практическая работа №6
