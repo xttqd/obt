@@ -1,12 +1,10 @@
-# <a href="https://github.com/xttqd/obt/releases/download/latest/master.zip"><img alt="Download repository" src="https://custom-icon-badges.demolab.com/badge/-%D0%A1%D0%BA%D0%B0%D1%87%D0%B0%D1%82%D1%8C%20%D1%80%D0%B5%D0%BF%D0%BE%D0%B7%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%B9-198754?style=for-the-badge&logo=download&logoColor=white"></a>
-
-# <a href="https://github.com/xttqd/obt/tree/master/contracts"><img alt="Contracts" src="https://custom-icon-badges.demolab.com/badge/-%D0%9A%D0%BE%D0%BD%D1%82%D1%80%D0%B0%D0%BA%D1%82%D1%8B-yellow?style=for-the-badge&logo=container&logoColor=white"></a> <a href="https://github.com/xttqd/obt/tree/master/docs/2022"><img alt="Documents" src="https://custom-icon-badges.demolab.com/badge/-%D0%9E%D1%82%D1%87%D1%91%D1%82%D1%8B-yellow?style=for-the-badge&logo=checklist&logoColor=white"></a>
+# <a href="https://github.com/xttqd/obt/releases/download/latest/master.zip"><img alt="Download repository" src="https://custom-icon-badges.demolab.com/badge/-%D0%A1%D0%BA%D0%B0%D1%87%D0%B0%D1%82%D1%8C%20%D1%80%D0%B5%D0%BF%D0%BE%D0%B7%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%B9-198754?style=for-the-badge&logo=download&logoColor=white"></a> <a href="https://github.com/xttqd/obt/tree/master/contracts"><img alt="Contracts" src="https://custom-icon-badges.demolab.com/badge/-%D0%9A%D0%BE%D0%BD%D1%82%D1%80%D0%B0%D0%BA%D1%82%D1%8B-yellow?style=for-the-badge&logo=container&logoColor=white"></a> <a href="https://github.com/xttqd/obt/tree/master/docs/2022"><img alt="Documents" src="https://custom-icon-badges.demolab.com/badge/-%D0%9E%D1%82%D1%87%D1%91%D1%82%D1%8B-yellow?style=for-the-badge&logo=checklist&logoColor=white"></a>
 
 
 - [x] Практическая работа №5
 - [x] Практическая работа №6
 - [x] Практическая работа №7
-- [x] Практическая работа №8 ([Отчёт](docs/2022/Практическая%2014.docx))
+- [x] Практическая работа №8 (<a download href="https://github.com/xttqd/obt/raw/refs/heads/master/docs/2022/%D0%9F%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%2014.docx">отчёт</a>)
 - [x] Практическая работа №9
 - [ ] [Практическая работа №10](pdf/2024/Практическая%20работа%2010.pdf) (2/3)
 - [ ] [Практическая работа №11](pdf/2024/Практическая%20работа%2011.pdf)
