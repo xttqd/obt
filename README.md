@@ -66,8 +66,8 @@
     - [x] <a download href="https://github.com/xttqd/obt/raw/refs/heads/master/docs/2022/%D0%9F%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%2021.docx">Задание 2</a>
     - [ ] Задание 3
 - [ ] [Практическая работа №24](pdf/2024/Практическая%20работа%2024.pdf)
-    - [x] [Задание 1](contracts/24_Dice.sol)
-    - [x] <a download href="https://github.com/xttqd/obt/raw/refs/heads/master/docs/2022/%D0%9F%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%2022.docx">Задание 2</a>
+    - [x] [Задание 1](contracts/24_Dice_2.sol)
+    - [x] <a download href="https://github.com/xttqd/obt/raw/refs/heads/master/docs/2022/%D0%9F%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%2022(%D0%94%D0%BE%D0%B4%D0%B5%D0%BB%D0%B0%D1%82%D1%8C).docx">Задание 2</a>
     - [ ] Задание 3
 - [ ] [Практическая работа №25](pdf/2024/Практическая%20работа%2025.pdf)
     - [x] [Задание 1](contracts/25_DragonFarm.sol)
