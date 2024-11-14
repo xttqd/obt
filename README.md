@@ -19,11 +19,11 @@
     - [x] [Задание 3](contracts/7.3_DateCalculator.sol) 
 - [ ] Практическая работа №8
     - [x] [Задание 1](contracts/8_Note.sol)
-    - [ ] <a download href="https://github.com/xttqd/obt/raw/refs/heads/master/docs/2022/%D0%9F%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%2014.docx">Задание 2</a>
-    - [x] Задание 3
+    - [x] <a download href="https://github.com/xttqd/obt/raw/refs/heads/master/docs/2022/%D0%9F%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%2014.docx">Задание 2</a>
+    - [ ] Задание 3
 - [ ] Практическая работа №9
     - [x] [Задание 1](contracts/9_NewNote.sol)
-    - [x] Задание 2
+    - [ ] Задание 2
     - [ ] Задание 3
 - [ ] [Практическая работа №10](pdf/2024/Практическая%20работа%2010.pdf)
     - [x] [Задание 1](contracts/10_Greetings.sol)
