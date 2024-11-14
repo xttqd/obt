@@ -19,16 +19,19 @@
     - [x] [Задание 3](contracts/7.3_DateCalculator.sol) 
 - [ ] Практическая работа №8
     - [x] [Задание 1](contracts/8_Note.sol)
-    - [ ] Задание 2
-    - [x] <a download href="https://github.com/xttqd/obt/raw/refs/heads/master/docs/2022/%D0%9F%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%2014.docx">Задание 3</a>
+    - [ ] <a download href="https://github.com/xttqd/obt/raw/refs/heads/master/docs/2022/%D0%9F%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%2014.docx">Задание 2</a>
+    - [x] Задание 3
 - [ ] Практическая работа №9
     - [x] [Задание 1](contracts/9_NewNote.sol)
-    - [ ] Задание 2
+    - [x] Задание 2
     - [ ] Задание 3
 - [ ] [Практическая работа №10](pdf/2024/Практическая%20работа%2010.pdf)
     - [x] [Задание 1](contracts/10_Greetings.sol)
     - [ ] Задание 2
 - [ ] [Практическая работа №11](pdf/2024/Практическая%20работа%2011.pdf)
+    - [x] [Задание 1](contracts/11_Voting.sol)
+    - [x] <a download href="https://github.com/xttqd/obt/raw/refs/heads/master/docs/2022/%D0%9F%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%2032.docx">Задание 2</a>
+    - [ ] Задание 3
 - [ ] [Практическая работа №12](pdf/2024/Практическая%20работа%2012.pdf)
 - [ ] [Практическая работа №13](pdf/2024/Практическая%20работа%2013.pdf)
 - [ ] [Практическая работа №14](pdf/2024/Практическая%20работа%2014.pdf)
@@ -36,67 +39,67 @@
 - [ ] [Практическая работа №16](pdf/2024/Практическая%20работа%2016.pdf)
 - [ ] [Практическая работа №17](pdf/2024/Практическая%20работа%2017.pdf)
     - [x] [Задание 1](contracts/17_Owner.sol)
-    - [ ] Задание 2
+    - [x] <a download href="https://github.com/xttqd/obt/raw/refs/heads/master/docs/2022/%D0%9F%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%2015.docx">Задание 2</a>
     - [ ] Задание 3
 - [ ] [Практическая работа №18](pdf/2024/Практическая%20работа%2018.pdf)
     - [x] [Задание 1](contracts/18_Grades.sol)
-    - [ ] Задание 2
+    - [x] <a download href="https://github.com/xttqd/obt/raw/refs/heads/master/docs/2022/%D0%9F%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%2016.docx">Задание 2</a>
     - [ ] Задание 3
 - [ ] [Практическая работа №19](pdf/2024/Практическая%20работа%2019.pdf)
     - [x] [Задание 1](contracts/19_Address.sol)
-    - [ ] Задание 2
+    - [x] <a download href="https://github.com/xttqd/obt/raw/refs/heads/master/docs/2022/%D0%9F%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%2017.docx">Задание 2</a>
     - [ ] Задание 3
 - [ ] [Практическая работа №20](pdf/2024/Практическая%20работа%2020.pdf)
     - [x] [Задание 1](contracts/20_Voter.sol)
-    - [ ] Задание 2
+    - [x] <a download href="https://github.com/xttqd/obt/raw/refs/heads/master/docs/2022/%D0%9F%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%2018.docx">Задание 2</a>
     - [ ] Задание 3
 - [ ] [Практическая работа №21](pdf/2024/Практическая%20работа%2021.pdf)
     - [x] [Задание 1](contracts/21_RandomSeven.sol)
-    - [ ] Задание 2
+    - [x] <a download href="https://github.com/xttqd/obt/raw/refs/heads/master/docs/2022/%D0%9F%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%2019.docx">Задание 2</a>
     - [ ] Задание 3
 - [ ] [Практическая работа №22](pdf/2024/Практическая%20работа%2022.pdf)
     - [x] [Задание 1](contracts/22_RLottery.sol)
-    - [ ] Задание 2
+    - [x] <a download href="https://github.com/xttqd/obt/raw/refs/heads/master/docs/2022/%D0%9F%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%2020.docx">Задание 2</a>
     - [ ] Задание 3
 - [ ] [Практическая работа №23](pdf/2024/Практическая%20работа%2023.pdf)
-    - [x] [Задание 1](contracts/23_Dice.sol)
-    - [ ] Задание 2
+    - [ ] Задание 1
+    - [x] <a download href="https://github.com/xttqd/obt/raw/refs/heads/master/docs/2022/%D0%9F%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%2021.docx">Задание 2</a>
     - [ ] Задание 3
 - [ ] [Практическая работа №24](pdf/2024/Практическая%20работа%2024.pdf)
-    - [ ] Задание 1
-    - [ ] Задание 2
+    - [x] [Задание 1](contracts/24_Dice.sol)
+    - [x] <a download href="https://github.com/xttqd/obt/raw/refs/heads/master/docs/2022/%D0%9F%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%2022.docx">Задание 2</a>
     - [ ] Задание 3
 - [ ] [Практическая работа №25](pdf/2024/Практическая%20работа%2025.pdf)
     - [x] [Задание 1](contracts/25_DragonFarm.sol)
-    - [ ] Задание 2
+    - [x] <a download href="https://github.com/xttqd/obt/raw/refs/heads/master/docs/2022/%D0%9F%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%2023.docx">Задание 2</a>
     - [ ] Задание 3
 - [ ] [Практическая работа №26](pdf/2024/Практическая%20работа%2026.pdf)
     - [x] [Задание 1](contracts/26_DragonForge.sol)
-    - [ ] Задание 2
+    - [x] <a download href="https://github.com/xttqd/obt/raw/refs/heads/master/docs/2022/%D0%9F%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%2024.docx">Задание 2</a>
     - [ ] Задание 3
 - [ ] [Практическая работа №27](pdf/2024/Практическая%20работа%2027.pdf)
     - [x] [Задание 1](contracts/27_Transaction.sol)
-    - [ ] Задание 2
+    - [x] <a download href="https://github.com/xttqd/obt/raw/refs/heads/master/docs/2022/%D0%9F%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%2025.docx">Задание 2</a>
     - [ ] Задание 3
 - [ ] [Практическая работа №28](pdf/2024/Практическая%20работа%2028.pdf)
     - [x] [Задание 1](contracts/28_Split.sol)
-    - [ ] Задание 2
+    - [x] <a download href="https://github.com/xttqd/obt/raw/refs/heads/master/docs/2022/%D0%9F%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%2026.docx">Задание 2</a>
     - [ ] Задание 3
 - [ ] [Практическая работа №29](pdf/2024/Практическая%20работа%2029.pdf)
     - [x] [Задание 1](contracts/29_Donation.sol)
-    - [ ] Задание 2
+    - [x] <a download href="https://github.com/xttqd/obt/raw/refs/heads/master/docs/2022/%D0%9F%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%2027.docx">Задание 2</a>
     - [ ] Задание 3
 - [ ] [Практическая работа №30](pdf/2024/Практическая%20работа%2030.pdf)
     - [x] [Задание 1](contracts/30_BankDeposit.sol)
-    - [ ] Задание 2
+    - [x] <a download href="https://github.com/xttqd/obt/raw/refs/heads/master/docs/2022/%D0%9F%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%2026.docx">Задание 2</a>
     - [ ] Задание 3
 - [ ] [Практическая работа №31](pdf/2024/Практическая%20работа%2031.pdf)
     - [x] [Задание 1](contracts/31_Insurance.sol)
-    - [ ] Задание 2
+    - [x] <a download href="https://github.com/xttqd/obt/raw/refs/heads/master/docs/2022/%D0%9F%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%2029.docx">Задание 2</a>
     - [ ] Задание 3
 - [ ] [Практическая работа №32](pdf/2024/Практическая%20работа%2032.pdf)
     - [x] [Задание 1](contracts/32_MyCoin.sol)
-    - [ ] Задание 2
+    - [x] <a download href="https://github.com/xttqd/obt/raw/refs/heads/master/docs/2022/%D0%9F%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%2030.docx">Задание 2</a>
     - [ ] Задание 3
 - [ ] [Практическая работа №33](pdf/2024/Практическая%20работа%2033.pdf) — Testing
 - [ ] [Практическая работа №34](pdf/2024/Практическая%20работа%2034.pdf) — WalletService
