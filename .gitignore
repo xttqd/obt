@@ -1,3 +1,4 @@
 .states
 .deps
 contracts/artifacts
+scenario.json
