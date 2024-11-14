@@ -3,23 +3,22 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 contract Address {
-  mapping(uint=>address) addresses;
-  uint Count;
-  function set(address userAddress) public {
-    addresses[Count] = userAddress;
-    Count++;
-  }
-  function get(address userAddress) public view returns (uint) {
-    for (uint i = 0; i <= Count; i++) {
-      if (addresses[i] == userAddress)
-      return i;
+    mapping(uint => address) addresses;
+    uint Count;
+    function set(address userAddress) public {
+        addresses[Count] = userAddress;
+        Count++;
     }
-  }
-  function getAll() public view returns (address[] memory){
-    address[] memory all = new address[](Count);
-    for (uint i = 0; i < Count; i++) {
-      all[i] = addresses[i];
+    function get(address userAddress) public view returns (uint) {
+        for (uint i = 0; i <= Count; i++) {
+            if (addresses[i] == userAddress) return i;
+        }
     }
-    return all;
-  }
+    function getAll() public view returns (address[] memory) {
+        address[] memory all = new address[](Count);
+        for (uint i = 0; i < Count; i++) {
+            all[i] = addresses[i];
+        }
+        return all;
+    }
 }
