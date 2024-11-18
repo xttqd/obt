@@ -14,13 +14,13 @@
     - [x] [Задание 3](contracts/7.3_DateCalculator.sol) 
 - [x] Практическая работа №8
     - [x] [Задание 1](contracts/8_Note.sol)
-    - [x] <a download href="https://github.com/xttqd/obt/raw/refs/heads/master/docs/2022/%D0%9F%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%2014.docx">Задание 2</a>
-- [ ] Практическая работа №9
+    - [x] Задание 2 (любые скриншоты по 10 раз)
+- [x] Практическая работа №9
     - [x] [Задание 1](contracts/9_NewNote.sol)
-    - [ ] Задание 2
-- [ ] [Практическая работа №10](pdf/2024/Практическая%20работа%2010.pdf)
-    - [x] [Задание 1](contracts/10_Greetings.sol)
-    - [ ] Задание 2
+    - [x] Задание 2 (любые скриншоты по 10 раз)
+- [x] [Практическая работа №10](pdf/2024/Практическая%20работа%2010.pdf)
+    - [x] [Задание 1](contracts/10_Greetings.sol), [HTML](dapps/greetings.html)
+    - [x] Задание 2 (Любые скриншоты по 10 раз)
 - [ ] [Практическая работа №11](pdf/2024/Практическая%20работа%2011.pdf)
     - [x] [Задание 1](contracts/11_Voting.sol)
     - [x] <a download href="https://github.com/xttqd/obt/raw/refs/heads/master/docs/2022/%D0%9F%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%2032.docx">Задание 2</a>
