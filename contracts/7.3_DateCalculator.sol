@@ -9,11 +9,10 @@ contract DateCalculator {
         uint256 day;
     }
 
-    function _daysInMonth(uint256 month, uint256 year)
-        private
-        pure
-        returns (uint256)
-    {
+    function _daysInMonth(
+        uint256 month,
+        uint256 year
+    ) private pure returns (uint256) {
         uint8[12] memory daysInMonth = [
             31,
             28,
@@ -38,28 +37,26 @@ contract DateCalculator {
         return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
     }
 
-    function dateDifference(Date memory startDate, Date memory endDate)
-        public
-        pure
-        returns (int256)
-    {
+    function dateDifference(
+        Date memory startDate,
+        Date memory endDate
+    ) public pure returns (int256 DaysDifference) {
         int256 startDays = _dateToDays(startDate);
         int256 endDays = _dateToDays(endDate);
         return endDays - startDays;
     }
 
-    function addOrSubtractDays(Date memory date, int256 daysToAdd)
-        public
-        pure
-        returns (Date memory)
-    {
+    function addOrSubtractDays(
+        Date memory date,
+        int256 daysToAdd
+    ) public pure returns (uint256 Year, uint256 Month, uint256 Day) {
         int256 totalDays = _dateToDays(date) + daysToAdd;
         require(
             totalDays >= 0,
             "Resulting date is before the start of the calendar"
         );
-
-        return _daysToDate(uint256(totalDays));
+        Date memory sh = _daysToDate(uint256(totalDays));
+        return (sh.year, sh.month, sh.day);
     }
 
     function _dateToDays(Date memory date) private pure returns (int256) {
