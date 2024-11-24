@@ -3,26 +3,11 @@
 *Любые скриншоты по 10 раз
 
 - [x] Практическая работа №5
-    - [x] [Задание 1](contracts/5.1_DecimalToBinaryConverter.sol)
-    - [x] [Задание 2](contracts/5.2_DecimalToHexConverter.sol)
-    - [x] [Задание 3](contracts/5.3_BaseConverter.sol)
 - [x] Практическая работа №6
-    - [x] [Задание 1](contracts/6.1_Calculator.sol)
-    - [x] [Задание 2](contracts/6.2_BitwiseCalculator.sol)
-    - [x] [Задание 3](contracts/6.3_BitwiseCalculatorAdvanced.sol)
 - [x] Практическая работа №7
-    - [x] [Задание 1](contracts/7.1_Exponentiation.sol)
-    - [x] [Задание 2](contracts/7.2_BitwiseShift.sol)
-    - [x] [Задание 3](contracts/7.3_DateCalculator.sol) 
 - [x] Практическая работа №8
-    - [x] [Задание 1](contracts/8_Note.sol)
-    - [x] Задание 2*
 - [x] Практическая работа №9
-    - [x] [Задание 1](contracts/9_NewNote.sol)
-    - [x] Задание 2*
 - [x] Практическая работа №10
-    - [x] [Задание 1](contracts/10_Greetings.sol), [HTML](dapps/greetings.html)
-    - [x] Задание 2*
 - [ ] [Практическая работа №11](pdf/2024/Практическая%20работа%2011.pdf)
     - [x] [Задание 1](contracts/11_Voting.sol)
     - [x] Задание 2*
