@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyCoin DApp</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        .card {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #495057;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .status {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>MyCoin DApp</h1>
+
+        <div class="card">
+            <h2>Account Information</h2>
+            <div id="accountInfo"></div>
+        </div>
+
+        <div class="card">
+            <h2>Token Information</h2>
+            <div id="tokenInfo">
+                <p>Total Supply: <span id="totalSupply">-</span> MYC</p>
+                <p>Your Balance: <span id="userBalance">-</span> MYC</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Transfer Tokens</h2>
+            <div class="form-group">
+                <label for="recipientAddress">Recipient Address:</label>
+                <input type="text" id="recipientAddress" placeholder="0x...">
+            </div>
+            <div class="form-group">
+                <label for="amount">Amount:</label>
+                <input type="number" id="amount" placeholder="Enter amount">
+            </div>
+            <button id="transferButton">Transfer</button>
+            <div id="transferStatus"></div>
+        </div>
+    </div>
+
+    <script>
+        const contractAddress = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512';
+        const contractABI = [
+            {
+                "inputs": [],
+                "name": "Coin",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "_to",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "_value",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "transfer",
+                "outputs": [
+                    {
+                        "internalType": "bool",
+                        "name": "",
+                        "type": "bool"
+                    }
+                ],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "anonymous": false,
+                "inputs": [
+                    {
+                        "indexed": true,
+                        "internalType": "address",
+                        "name": "_from",
+                        "type": "address"
+                    },
+                    {
+                        "indexed": true,
+                        "internalType": "address",
+                        "name": "_to",
+                        "type": "address"
+                    },
+                    {
+                        "indexed": false,
+                        "internalType": "uint256",
+                        "name": "_value",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "Transfer",
+                "type": "event"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "name": "balance",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "_owner",
+                        "type": "address"
+                    }
+                ],
+                "name": "balanceOf",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "totalSupply",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            }
+        ];
+
+        let web3;
+        let contract;
+        let userAccount;
+
+        async function init() {
+            try {
+                // Connect to local Hardhat node
+                web3 = new Web3('http://127.0.0.1:8545');
+
+                // Get the first account (this will be the default account)
+                const accounts = await web3.eth.getAccounts();
+                userAccount = accounts[0];
+
+                // Initialize contract
+                contract = new web3.eth.Contract(contractABI, contractAddress);
+
+                // Update UI
+                updateUI();
+
+            } catch (error) {
+                console.error('Error:', error);
+                showStatus('Error connecting to local node: ' + error.message, 'error');
+            }
+        }
+
+        async function updateUI() {
+            if (!contract || !userAccount) return;
+
+            try {
+                const totalSupply = await contract.methods.totalSupply().call();
+                const balance = await contract.methods.balanceOf(userAccount).call();
+
+                document.getElementById('totalSupply').textContent = totalSupply;
+                document.getElementById('userBalance').textContent = balance;
+                document.getElementById('accountInfo').textContent = `Connected Account: ${userAccount}`;
+                document.getElementById('transferButton').disabled = false;
+            } catch (error) {
+                console.error('Error updating UI:', error);
+                showStatus('Error updating UI: ' + error.message, 'error');
+            }
+        }
+
+        async function transferTokens() {
+            const recipientAddress = document.getElementById('recipientAddress').value;
+            const amount = document.getElementById('amount').value;
+
+            if (!recipientAddress || !amount) {
+                showStatus('Please fill in all fields', 'error');
+                return;
+            }
+
+            try {
+                const result = await contract.methods.transfer(recipientAddress, amount)
+                    .send({ from: userAccount });
+
+                showStatus('Transfer successful!', 'success');
+                updateUI();
+                document.getElementById('recipientAddress').value = '';
+                document.getElementById('amount').value = '';
+            } catch (error) {
+                showStatus('Transfer failed: ' + error.message, 'error');
+            }
+        }
+
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('transferStatus');
+            statusDiv.textContent = message;
+            statusDiv.className = 'status ' + type;
+        }
+
+        // Initialize when page loads
+        window.addEventListener('load', init);
+        document.getElementById('transferButton').addEventListener('click', transferTokens);
+    </script>
+</body>
+
+</html>
