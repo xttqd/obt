@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insurance DApp</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1,
+        h2 {
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        .card {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #495057;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .status {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .records-list {
+            margin-top: 20px;
+        }
+
+        .record-item {
+            background-color: white;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+            border: 1px solid #dee2e6;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Insurance DApp</h1>
+
+        <div class="card">
+            <h2>Account Information</h2>
+            <div id="accountInfo"></div>
+        </div>
+
+        <div class="card">
+            <h2>Create New Record</h2>
+            <div class="form-group">
+                <label for="recordId">Record ID:</label>
+                <input type="number" id="recordId" placeholder="Enter record ID">
+            </div>
+            <div class="form-group">
+                <label for="testName">Test Name:</label>
+                <input type="text" id="testName" placeholder="Enter test name">
+            </div>
+            <div class="form-group">
+                <label for="date">Date:</label>
+                <input type="text" id="date" placeholder="Enter date">
+            </div>
+            <div class="form-group">
+                <label for="price">Price (ETH):</label>
+                <input type="number" id="price" placeholder="Enter price in ETH" step="0.000000000000000001">
+            </div>
+            <button id="createRecordButton">Create Record</button>
+            <div id="createStatus"></div>
+        </div>
+
+        <div class="card">
+            <h2>Sign Record</h2>
+            <div class="form-group">
+                <label for="signRecordId">Record ID:</label>
+                <input type="number" id="signRecordId" placeholder="Enter record ID to sign">
+            </div>
+            <button id="signRecordButton">Sign Record</button>
+            <div id="signStatus"></div>
+        </div>
+
+        <div class="card">
+            <h2>Records List</h2>
+            <div id="recordsList" class="records-list"></div>
+        </div>
+    </div>
+
+    <script>
+        const contractAddress = '0x712516e61C8B383dF4A63CFe83d7701Bce54B03e'; // Replace with your deployed contract address
+        const contractABI = [
+            {
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "_ID",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "_Name",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "_date",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "price",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "newRecord",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "stateMutability": "nonpayable",
+                "type": "constructor"
+            },
+            {
+                "anonymous": false,
+                "inputs": [
+                    {
+                        "indexed": false,
+                        "internalType": "uint256",
+                        "name": "ID",
+                        "type": "uint256"
+                    },
+                    {
+                        "indexed": false,
+                        "internalType": "string",
+                        "name": "testName",
+                        "type": "string"
+                    },
+                    {
+                        "indexed": false,
+                        "internalType": "string",
+                        "name": "date",
+                        "type": "string"
+                    },
+                    {
+                        "indexed": false,
+                        "internalType": "uint256",
+                        "name": "price",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "recordCreated",
+                "type": "event"
+            },
+            {
+                "anonymous": false,
+                "inputs": [
+                    {
+                        "indexed": false,
+                        "internalType": "uint256",
+                        "name": "ID",
+                        "type": "uint256"
+                    },
+                    {
+                        "indexed": false,
+                        "internalType": "string",
+                        "name": "testName",
+                        "type": "string"
+                    },
+                    {
+                        "indexed": false,
+                        "internalType": "string",
+                        "name": "date",
+                        "type": "string"
+                    },
+                    {
+                        "indexed": false,
+                        "internalType": "uint256",
+                        "name": "price",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "recordSigned",
+                "type": "event"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "_ID",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "signRecord",
+                "outputs": [],
+                "stateMutability": "payable",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "all_record",
+                "outputs": [
+                    {
+                        "internalType": "address",
+                        "name": "Addr",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "ID",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "Name",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "date",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "price",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "isValue",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "signatureCount",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "hospital",
+                "outputs": [
+                    {
+                        "internalType": "address payable",
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "insurer",
+                "outputs": [
+                    {
+                        "internalType": "address payable",
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "recordsArr",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            }
+        ];
+
+        let web3;
+        let contract;
+        let userAccount;
+
+        async function init() {
+            try {
+                // Connect to local Hardhat node
+                web3 = new Web3('http://127.0.0.1:8545');
+
+                // Get the first account
+                const accounts = await web3.eth.getAccounts();
+                userAccount = accounts[0];
+
+                // Initialize contract
+                contract = new web3.eth.Contract(contractABI, contractAddress);
+
+                // Update UI
+                updateUI();
+                loadRecords();
+
+            } catch (error) {
+                console.error('Error:', error);
+                showStatus('Error connecting to local node: ' + error.message, 'error');
+            }
+        }
+
+        async function updateUI() {
+            if (!contract || !userAccount) return;
+
+            try {
+                document.getElementById('accountInfo').textContent = `Connected Account: ${userAccount}`;
+            } catch (error) {
+                console.error('Error updating UI:', error);
+                showStatus('Error updating UI: ' + error.message, 'error', 'create');
+            }
+        }
+
+        async function loadRecords() {
+            if (!contract) return;
+
+            try {
+                const recordsList = document.getElementById('recordsList');
+                recordsList.innerHTML = '';
+
+                // Get all records first
+                const records = [];
+                let i = 0;
+                let recordId;
+                while (true) {
+                    try {
+                        recordId = await contract.methods.recordsArr(i).call();
+                        const record = await contract.methods.all_record(recordId).call();
+                        records.push(record);
+                        i++;
+                    } catch (error) {
+                        // Break the loop when we reach the end of the array
+                        break;
+                    }
+                }
+
+                // Display records in reverse order (newest to oldest)
+                for (let i = records.length - 1; i >= 0; i--) {
+                    const record = records[i];
+                    const recordElement = document.createElement('div');
+                    recordElement.className = 'record-item';
+                    recordElement.innerHTML = `
+                        <p><strong>ID:</strong> ${record.ID}</p>
+                        <p><strong>Name:</strong> ${record.Name}</p>
+                        <p><strong>Date:</strong> ${record.date}</p>
+                        <p><strong>Price:</strong> ${web3.utils.fromWei(record.price, 'ether')} ETH</p>
+                        <p><strong>Signatures:</strong> ${record.signatureCount}/2</p>
+                    `;
+                    recordsList.appendChild(recordElement);
+                }
+            } catch (error) {
+                console.error('Error loading records:', error);
+            }
+        }
+
+        async function createRecord() {
+            const recordId = document.getElementById('recordId').value;
+            const testName = document.getElementById('testName').value;
+            const date = document.getElementById('date').value;
+            const price = web3.utils.toWei(document.getElementById('price').value, 'ether');
+
+            if (!recordId || !testName || !date || !price) {
+                showStatus('Please fill in all fields', 'error', 'create');
+                return;
+            }
+
+            try {
+                await contract.methods.newRecord(recordId, testName, date, price)
+                    .send({ from: userAccount });
+
+                showStatus('Record created successfully!', 'success', 'create');
+                loadRecords();
+                document.getElementById('recordId').value = '';
+                document.getElementById('testName').value = '';
+                document.getElementById('date').value = '';
+                document.getElementById('price').value = '';
+            } catch (error) {
+                showStatus('Error creating record: ' + error.message, 'error', 'create');
+            }
+        }
+
+        async function signRecord() {
+            const recordId = document.getElementById('signRecordId').value;
+
+            if (!recordId) {
+                showStatus('Please enter a record ID', 'error', 'sign');
+                return;
+            }
+
+            try {
+                // Check if current account is hospital or insurer
+                const hospital = await contract.methods.hospital().call();
+                const insurer = await contract.methods.insurer().call();
+
+                if (userAccount.toLowerCase() !== hospital.toLowerCase() &&
+                    userAccount.toLowerCase() !== insurer.toLowerCase()) {
+                    showStatus('Error: Only hospital or insurer can sign records', 'error', 'sign');
+                    return;
+                }
+
+                await contract.methods.signRecord(recordId)
+                    .send({ from: userAccount });
+
+                showStatus('Record signed successfully!', 'success', 'sign');
+                loadRecords();
+                document.getElementById('signRecordId').value = '';
+            } catch (error) {
+                if (error.message.includes('No matching error abi')) {
+                    showStatus('Error: Only hospital or insurer can sign records', 'error', 'sign');
+                } else {
+                    showStatus('Error signing record: ' + error.message, 'error', 'sign');
+                }
+            }
+        }
+
+        function showStatus(message, type, action = 'create') {
+            const statusDiv = document.getElementById(action === 'create' ? 'createStatus' : 'signStatus');
+            statusDiv.textContent = message;
+            statusDiv.className = 'status ' + type;
+        }
+
+        // Initialize when page loads
+        window.addEventListener('load', init);
+        document.getElementById('createRecordButton').addEventListener('click', createRecord);
+        document.getElementById('signRecordButton').addEventListener('click', signRecord);
+    </script>
+</body>
+
+</html>
