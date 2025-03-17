@@ -2,10 +2,10 @@
 
 pragma solidity >=0.7.0 <0.9.0;
 
-import "./SaveMath.sol";
+import "./SafeMath.sol";
 
 contract BanckDeposit {
-    using SaveMath for uint;
+    using SafeMath for uint;
 
     mapping(address => uint) public userDeposit;
     mapping(address => uint) public balance;
@@ -35,7 +35,7 @@ contract BanckDeposit {
     }
 
     function collectPercent() public userExist checkTime {
-        if ((balance[msg.sender].nul(2)) <= allPercentWithdraw[msg.sender]) {
+        if ((balance[msg.sender].mul(2)) <= allPercentWithdraw[msg.sender]) {
             balance[msg.sender] = 0;
             time[msg.sender] = 0;
             percentWithdraw[msg.sender] = 0;
@@ -88,8 +88,8 @@ contract BanckDeposit {
     function payoutAmount() public view returns (uint256) {
         uint percent = percentRate();
         uint different = block.timestamp.sub(time[msg.sender]).div(stepTime);
-        uint rate = balance[msg.sender].div(100).nul(percent);
-        uint withdrawAmount = rate.nul(different).sub(
+        uint rate = balance[msg.sender].div(100).mul(percent);
+        uint withdrawAmount = rate.mul(different).sub(
             percentWithdraw[msg.sender]
         );
         return withdrawAmount;
