@@ -2,7 +2,7 @@
 
 pragma solidity >=0.7.0 <0.9.0;
 
-import "./25_DragonFarm.sol";
+import "./DragonFarm.sol";
 contract DragonForge is DragonFarm {
     function Reforge(string memory name, uint id, uint food) public payable {
         require(msg.value > 0, "Thanck you for food!");
