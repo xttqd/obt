@@ -117,10 +117,10 @@ npx hardhat test
 </details>
 
 <details>
-<summary>❌ Практическая работа 18</summary>
+<summary>✅ Практическая работа 18</summary>
 
 - [x] [Grades.sol](contracts/Grades.sol)
-- [ ] Grades.html
+- [x] [Grades.html](dapps/Grades.html)
 </details>
 
 <details>
