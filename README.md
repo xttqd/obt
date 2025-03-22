@@ -138,10 +138,10 @@ npx hardhat test
 </details>
 
 <details>
-<summary>❌ Практическая работа 21</summary>
+<summary>✅ Практическая работа 21</summary>
 
 - [x] [RandomSeven.sol](contracts/RandomSeven.sol)
-- [ ] RandomSeven.html
+- [x] [RandomSeven.html](dapps/RandomSeven.html)
 </details>
 
 <details>

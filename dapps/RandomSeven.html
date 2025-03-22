@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Random Seven Game</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f0f2f5;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        h1,
+        h2 {
+            color: #1a73e8;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            background: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #1557b0;
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .winner {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #a5d6a7;
+        }
+
+        .loser {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ef9a9a;
+        }
+
+        .message {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            background: #e3f2fd;
+            color: #1a73e8;
+        }
+
+        .error {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border: 1px solid #bbdefb;
+        }
+
+        .info-box h3 {
+            margin-top: 0;
+            color: #1a73e8;
+        }
+
+        .info-box p {
+            margin: 5px 0;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Random Seven Game</h1>
+
+        <div class="info-box">
+            <h3>How to Play</h3>
+            <p>Enter a number and the contract will check if it contains the digit 7 in any position.</p>
+            <p>If the number contains 7, you win! If not, you lose.</p>
+        </div>
+
+        <div class="section">
+            <h2>Play Game</h2>
+            <div class="form-group">
+                <label for="number">Enter a number:</label>
+                <input type="number" id="number" placeholder="Enter a number">
+            </div>
+            <button onclick="checkNumber()">Check Number</button>
+            <div id="result" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        let web3;
+        let contract;
+        const contractAddress = '0x9bAaB117304f7D6517048e371025dB8f89a8DbE5';
+        const abi = [
+            {
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "x",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "Random",
+                "outputs": [
+                    {
+                        "internalType": "string",
+                        "name": "",
+                        "type": "string"
+                    }
+                ],
+                "stateMutability": "pure",
+                "type": "function"
+            }
+        ];
+
+        async function init() {
+            try {
+                web3 = new Web3('http://127.0.0.1:8545');
+                contract = new web3.eth.Contract(abi, contractAddress);
+            } catch (error) {
+                console.error('Error initializing Web3:', error);
+                showResult('Error initializing the application', 'error');
+            }
+        }
+
+        async function checkNumber() {
+            try {
+                const number = document.getElementById('number').value;
+                if (!number) {
+                    showResult('Please enter a number', 'error');
+                    return;
+                }
+
+                const accounts = await web3.eth.getAccounts();
+                const result = await contract.methods.Random(number).call({ from: accounts[0] });
+                
+                showResult(result, result === 'Winner' ? 'winner' : 'loser');
+            } catch (error) {
+                showResult(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        function showResult(message, type) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = message;
+            resultDiv.className = `result ${type}`;
+        }
+
+        init();
+    </script>
+</body>
+
+</html>
