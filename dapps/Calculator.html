@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Calculator</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .container {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        input,
+        select,
+        button {
+            padding: 10px;
+            margin: 5px;
+        }
+
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Calculator</h1>
+        <div>
+            <input type="number" id="num1" placeholder="First number">
+            <select id="operation">
+                <option value="+">+</option>
+                <option value="-">-</option>
+                <option value="*">*</option>
+                <option value="/">/</option>
+            </select>
+            <input type="number" id="num2" placeholder="Second number">
+            <button onclick="calculate()">Calculate</button>
+        </div>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        let web3;
+        let contract;
+        const contractAddress = '0x0165878A594ca255338adfa4d48449f69242Eb8F'; // Replace with your deployed contract address
+        const abi = [
+            {
+                "inputs": [
+                    {
+                        "internalType": "int256",
+                        "name": "x",
+                        "type": "int256"
+                    },
+                    {
+                        "internalType": "int256",
+                        "name": "y",
+                        "type": "int256"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "oper",
+                        "type": "string"
+                    }
+                ],
+                "name": "calculate",
+                "outputs": [
+                    {
+                        "internalType": "int256",
+                        "name": "",
+                        "type": "int256"
+                    }
+                ],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "result",
+                "outputs": [
+                    {
+                        "internalType": "int256",
+                        "name": "",
+                        "type": "int256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            }
+        ];
+
+        async function init() {
+            try {
+                // Connect to Hardhat provider
+                web3 = new Web3('http://127.0.0.1:8545');
+                contract = new web3.eth.Contract(abi, contractAddress);
+            } catch (error) {
+                console.error('Error initializing Web3:', error);
+            }
+        }
+
+        async function calculate() {
+            try {
+                const num1 = document.getElementById('num1').value;
+                const num2 = document.getElementById('num2').value;
+                const operation = document.getElementById('operation').value;
+
+                if (num1 === '' || num2 === '') {
+                    alert('Please enter both numbers');
+                    return;
+                }
+
+                if (operation === '/' && num2 === '0') {
+                    alert('Cannot divide by zero');
+                    return;
+                }
+
+                const accounts = await web3.eth.getAccounts();
+                const result = await contract.methods.calculate(num1, num2, operation).call({ from: accounts[0] });
+                document.getElementById('result').innerHTML = `Result: ${result}`;
+            } catch (error) {
+                document.getElementById('result').innerHTML = `Error: ${error.message}`;
+            }
+        }
+
+        init();
+    </script>
+</body>
+
+</html>

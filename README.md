@@ -89,17 +89,17 @@ npx hardhat test
 <details>
 <summary>✅ Практическая работа 14</summary>
 
-- [x] DecimalToBinaryConverter.html
-- [x] DecimalToHexConverter.html
-- [x] BaseConverter.html
+- [x] [DecimalToBinaryConverter.html](dapps/DecimalToBinaryConverter.html)
+- [x] [DecimalToHexConverter.html](dapps/DecimalToHexConverter.html)
+- [x] [BaseConverter.html](dapps/BaseConverter.html)
 </details>
 
 <details>
-<summary>❌ Практическая работа 15</summary>
+<summary>✅ Практическая работа 15</summary>
 
-- [ ] Calculator.html
-- [ ] BitwiseCalculator.html
-- [ ] BitwiseCalculatorAdvanced.html
+- [x] [Calculator.html](dapps/Calculator.html)
+- [x] [BitwiseCalculator.html](dapps/BitwiseCalculator.html)
+- [x] [BitwiseCalculatorAdvanced.html](dapps/BitwiseCalculatorAdvanced.html)
 </details>
 
 <details>

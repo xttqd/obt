@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Advanced Bitwise Calculator</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .container {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        input,
+        select,
+        button {
+            padding: 10px;
+            margin: 5px;
+        }
+
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            font-family: monospace;
+        }
+
+        .operation-group {
+            margin: 10px 0;
+        }
+
+        .description {
+            margin: 10px 0;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Advanced Bitwise Calculator</h1>
+        <div class="description">
+            Supports NAND, NOR, and XOR operations on 8-bit binary numbers
+        </div>
+        <div class="operation-group">
+            <input type="text" id="input1" placeholder="First 8-bit binary number" pattern="[01]{8}" maxlength="8">
+            <select id="operation">
+                <option value="NAND">NAND</option>
+                <option value="NOR">NOR</option>
+                <option value="XOR">XOR</option>
+            </select>
+            <input type="text" id="input2" placeholder="Second 8-bit binary number" pattern="[01]{8}" maxlength="8">
+            <button onclick="calculate()">Calculate</button>
+        </div>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        let web3;
+        let contract;
+        const contractAddress = '0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6'; // Replace with your deployed contract address
+        const abi = [
+            {
+                "inputs": [
+                    {
+                        "internalType": "string",
+                        "name": "a",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "b",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "oper",
+                        "type": "string"
+                    }
+                ],
+                "name": "calculate",
+                "outputs": [
+                    {
+                        "internalType": "string",
+                        "name": "",
+                        "type": "string"
+                    }
+                ],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "result",
+                "outputs": [
+                    {
+                        "internalType": "string",
+                        "name": "",
+                        "type": "string"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            }
+        ];
+
+        async function init() {
+            try {
+                // Connect to Hardhat provider
+                web3 = new Web3('http://127.0.0.1:8545');
+                contract = new web3.eth.Contract(abi, contractAddress);
+            } catch (error) {
+                console.error('Error initializing Web3:', error);
+            }
+        }
+
+        function validateBinary(input) {
+            return /^[01]{8}$/.test(input);
+        }
+
+        async function calculate() {
+            try {
+                const input1 = document.getElementById('input1').value;
+                const input2 = document.getElementById('input2').value;
+                const operation = document.getElementById('operation').value;
+
+                if (!validateBinary(input1) || !validateBinary(input2)) {
+                    alert('Please enter valid 8-bit binary numbers (e.g., 10101010)');
+                    return;
+                }
+
+                const accounts = await web3.eth.getAccounts();
+                const result = await contract.methods.calculate(input1, input2, operation).call({ from: accounts[0] });
+                document.getElementById('result').innerHTML = `Result of ${operation}: ${result}`;
+            } catch (error) {
+                document.getElementById('result').innerHTML = `Error: ${error.message}`;
+            }
+        }
+
+        init();
+    </script>
+</body>
+
+</html>
