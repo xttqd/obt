@@ -124,10 +124,10 @@ npx hardhat test
 </details>
 
 <details>
-<summary>❌ Практическая работа 19</summary>
+<summary>✅ Практическая работа 19</summary>
 
 - [x] [Address.sol](contracts/Address.sol)
-- [ ] Address.html
+- [x] [Address.html](dapps/Address.html)
 </details>
 
 <details>

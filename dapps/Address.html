@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Address Manager</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .container {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .form-group {
+            margin: 15px 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        .address-list {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .address-item {
+            background: #e8f5e9;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+            font-family: monospace;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .address-index {
+            background: #2e7d32;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.9em;
+        }
+
+        .search-result {
+            background: #e3f2fd;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        .error {
+            color: #d32f2f;
+            background: #ffebee;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Address Manager</h1>
+
+        <div class="section">
+            <h2>Add Address</h2>
+            <div class="form-group">
+                <label for="address">Ethereum Address:</label>
+                <input type="text" id="address" placeholder="0x..." pattern="0x[a-fA-F0-9]{40}">
+                <div style="color: #666; font-size: 0.9em;">Enter a valid Ethereum address (0x followed by 40 hex
+                    characters)</div>
+            </div>
+            <button onclick="addAddress()">Add Address</button>
+        </div>
+
+        <div class="section">
+            <h2>Search Address</h2>
+            <div class="form-group">
+                <label for="searchAddress">Search by Address:</label>
+                <input type="text" id="searchAddress" placeholder="0x..." pattern="0x[a-fA-F0-9]{40}">
+            </div>
+            <button onclick="searchAddress()">Search</button>
+            <div id="searchResult" class="search-result"></div>
+        </div>
+
+        <div class="section">
+            <h2>All Addresses</h2>
+            <button onclick="getAllAddresses()">Refresh List</button>
+            <div id="addressList" class="address-list"></div>
+        </div>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        let web3;
+        let contract;
+        const contractAddress = '0xc6e7DF5E7b4f2A278906862b61205850344D4e7d'; // Replace with your deployed contract address
+        const abi = [
+            {
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "userAddress",
+                        "type": "address"
+                    }
+                ],
+                "name": "set",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "userAddress",
+                        "type": "address"
+                    }
+                ],
+                "name": "get",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "getAll",
+                "outputs": [
+                    {
+                        "internalType": "address[]",
+                        "name": "",
+                        "type": "address[]"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            }
+        ];
+
+        async function init() {
+            try {
+                // Connect to Hardhat provider
+                web3 = new Web3('http://127.0.0.1:8545');
+                contract = new web3.eth.Contract(abi, contractAddress);
+                await getAllAddresses(); // Load addresses on startup
+            } catch (error) {
+                console.error('Error initializing Web3:', error);
+                document.getElementById('result').innerHTML = `Error: ${error.message}`;
+            }
+        }
+
+        function validateAddress(address) {
+            return /^0x[a-fA-F0-9]{40}$/.test(address);
+        }
+
+        async function addAddress() {
+            try {
+                const address = document.getElementById('address').value;
+
+                if (!validateAddress(address)) {
+                    alert('Please enter a valid Ethereum address');
+                    return;
+                }
+
+                const accounts = await web3.eth.getAccounts();
+                await contract.methods.set(address).send({ from: accounts[0] });
+                document.getElementById('result').innerHTML = 'Address added successfully!';
+
+                // Clear input field
+                document.getElementById('address').value = '';
+
+                // Refresh the address list
+                await getAllAddresses();
+            } catch (error) {
+                document.getElementById('result').innerHTML = `Error: ${error.message}`;
+            }
+        }
+
+        async function searchAddress() {
+            try {
+                const address = document.getElementById('searchAddress').value;
+
+                if (!validateAddress(address)) {
+                    alert('Please enter a valid Ethereum address');
+                    return;
+                }
+
+                const accounts = await web3.eth.getAccounts();
+                const index = await contract.methods.get(address).call({ from: accounts[0] });
+
+                if (index === '0' && address !== await web3.eth.getAccounts().then(accs => accs[0])) {
+                    document.getElementById('searchResult').innerHTML = 'Address not found';
+                } else {
+                    document.getElementById('searchResult').innerHTML = `
+                        <strong>Address:</strong> ${address}<br>
+                        <strong>Index:</strong> ${index}
+                    `;
+                }
+            } catch (error) {
+                document.getElementById('searchResult').innerHTML = `Error: ${error.message}`;
+            }
+        }
+
+        async function getAllAddresses() {
+            try {
+                const accounts = await web3.eth.getAccounts();
+                const addresses = await contract.methods.getAll().call({ from: accounts[0] });
+
+                const addressList = document.getElementById('addressList');
+                if (addresses.length === 0) {
+                    addressList.innerHTML = 'No addresses stored yet';
+                    return;
+                }
+
+                addressList.innerHTML = addresses.map((addr, index) => `
+                    <div class="address-item">
+                        <span>${addr}</span>
+                        <span class="address-index">Index: ${index}</span>
+                    </div>
+                `).join('');
+            } catch (error) {
+                document.getElementById('addressList').innerHTML = `Error: ${error.message}`;
+            }
+        }
+
+        init();
+    </script>
+</body>
+
+</html>

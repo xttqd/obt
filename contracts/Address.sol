@@ -13,6 +13,7 @@ contract Address {
         for (uint i = 0; i <= Count; i++) {
             if (addresses[i] == userAddress) return i;
         }
+        return Count + 1;
     }
     function getAll() public view returns (address[] memory) {
         address[] memory all = new address[](Count);
