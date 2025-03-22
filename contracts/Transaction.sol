@@ -7,7 +7,7 @@ contract Transaction {
     mapping(address => uint) public balances;
     event Sent(address from, address to, uint amout);
 
-    constructor() public {
+    constructor() {
         owner = msg.sender;
     }
     function coin(address receiver, uint amount) public {
