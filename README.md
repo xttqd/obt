@@ -87,11 +87,11 @@ npx hardhat test
 </details>
 
 <details>
-<summary>❌ Практическая работа 14</summary>
+<summary>✅ Практическая работа 14</summary>
 
-- [ ] DecimalToBinaryConverter.html
-- [ ] DecimalToHexConverter.html
-- [ ] BaseConverter.html
+- [x] DecimalToBinaryConverter.html
+- [x] DecimalToHexConverter.html
+- [x] BaseConverter.html
 </details>
 
 <details>
