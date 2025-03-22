@@ -110,10 +110,10 @@ npx hardhat test
 </details>
 
 <details>
-<summary>❌ Практическая работа 17</summary>
+<summary>✅ Практическая работа 17</summary>
 
 - [x] [Owner.sol](contracts/Owner.sol)
-- [ ] Owner.html
+- [x] [Owner.html](dapps/Owner.html)
 </details>
 
 <details>
