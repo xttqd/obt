@@ -9,7 +9,7 @@ describe("Dice", function () {
 
   beforeEach(async function () {
     [owner, addr1] = await ethers.getSigners();
-    Dice = await ethers.getContractFactory("Dice");
+    Dice = await ethers.getContractFactory("contracts/Dice.sol:Dice");
     dice = await Dice.deploy();
   });
 
