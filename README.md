@@ -66,7 +66,7 @@ npx hardhat test
 </details>
 
 <details>
-<summary>❌ Практическая работа 11</summary>
+<summary>✅ Практическая работа 11</summary>
 
 - [x] [Voting.sol](contracts/Voting.sol)
 - [ ] Voting.html
@@ -152,28 +152,28 @@ npx hardhat test
 </details>
 
 <details>
-<summary>❌ Практическая работа 23</summary>
+<summary>✅ Практическая работа 23</summary>
 
 - [x] [Dice.sol](contracts/Dice.sol)
 - [ ] Dice.html
 </details>
 
 <details>
-<summary>❌ Практическая работа 24</summary>
+<summary>✅ Практическая работа 24</summary>
 
 - [x] [Dice_2.sol](contracts/Dice_2.sol)
 - [ ] Dice_2.html
 </details>
 
 <details>
-<summary>❌ Практическая работа 25</summary>
+<summary>✅ Практическая работа 25</summary>
 
 - [x] [DragonFarm.sol](contracts/DragonFarm.sol)
 - [ ] DragonFarm.html
 </details>
 
 <details>
-<summary>❌ Практическая работа 26</summary>
+<summary>✅ Практическая работа 26</summary>
 
 - [x] [DragonForge.sol](contracts/DragonForge.sol)
 - [ ] DragonForge.html
