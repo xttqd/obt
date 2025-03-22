@@ -13,7 +13,7 @@ contract Split {
         uint amount
     );
 
-    constructor() public {
+    constructor() {
         owner = msg.sender;
     }
     function Coin(address receiver, uint amount) public {

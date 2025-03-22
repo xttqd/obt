@@ -180,24 +180,24 @@ npx hardhat test
 </details>
 
 <details>
-<summary>❌ Практическая работа 27</summary>
+<summary>✅ Практическая работа 27</summary>
 
 - [x] [Transaction.sol](contracts/Transaction.sol)
-- [ ] Transaction.html
+- [x] [Transaction.html](dapps/Transaction.html)
 </details>
 
 <details>
-<summary>❌ Практическая работа 28</summary>
+<summary>✅ Практическая работа 28</summary>
 
 - [x] [Split.sol](contracts/Split.sol)
-- [ ] Split.html
+- [x] [Split.html](dapps/Split.html)
 </details>
 
 <details>
-<summary>❌ Практическая работа 29</summary>
+<summary>✅ Практическая работа 29</summary>
 
 - [x] [Donation.sol](contracts/Donation.sol)
-- [ ] Donation.html
+- [x] [Donation.html](dapps/Donation.html)
 </details>
 
 <details>

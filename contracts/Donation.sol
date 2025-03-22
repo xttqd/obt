@@ -6,7 +6,7 @@ contract Donation {
     address payable public owner;
     address[] public donators;
 
-    constructor() public {
+    constructor() {
         owner = payable(msg.sender);
     }
 
