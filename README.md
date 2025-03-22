@@ -103,10 +103,10 @@ npx hardhat test
 </details>
 
 <details>
-<summary>❌ Практическая работа 16</summary>
+<summary>✅ Практическая работа 16</summary>
 
 - [x] [Note.html](dapps/Note.html)
-- [ ] NewNote.html
+- [x] [NewNote.html](dapps/NewNote.html)
 </details>
 
 <details>
