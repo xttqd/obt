@@ -4,7 +4,7 @@ pragma solidity >=0.7.0 <0.9.0;
 
 contract Owner {
     address owner;
-    constructor() public {
+    constructor() {
         owner = msg.sender;
     }
     struct user {

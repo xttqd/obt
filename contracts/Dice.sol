@@ -11,7 +11,7 @@ contract Dice {
         _;
     }
 
-    constructor() public {
+    constructor() {
         manager = msg.sender;
     }
 
