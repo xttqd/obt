@@ -145,10 +145,10 @@ npx hardhat test
 </details>
 
 <details>
-<summary>❌ Практическая работа 22</summary>
+<summary>✅ Практическая работа 22</summary>
 
 - [x] [RLottery.sol](contracts/RLottery.sol)
-- [ ] RLottery.html
+- [x] [RLottery.html](dapps/RLottery.html)
 </details>
 
 <details>
