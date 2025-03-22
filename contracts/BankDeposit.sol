@@ -83,6 +83,8 @@ contract BanckDeposit {
         if (balance[msg.sender] >= 10 ether) {
             return (9);
         }
+        
+        return 5; // Default return value
     }
 
     function payoutAmount() public view returns (uint256) {

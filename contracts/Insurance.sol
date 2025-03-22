@@ -22,7 +22,7 @@ contract Insurance {
         _;
     }
 
-    constructor() public {
+    constructor() {
         hospital = payable(0x92e32563159EF37017F892F9Dc2ba601566BBD42);
         insurer = payable(0x36Ca97601cED35c9E70ad4d5eeCAD90de6f35a89);
     }
