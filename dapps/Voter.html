@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Voting System</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f0f2f5;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        h1,
+        h2 {
+            color: #1a73e8;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            background: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #1557b0;
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .candidate-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .candidate-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+
+        .candidate-card h3 {
+            margin: 0 0 10px 0;
+            color: #1a73e8;
+        }
+
+        .candidate-card p {
+            margin: 5px 0;
+            color: #666;
+        }
+
+        .vote-count {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #1a73e8;
+        }
+
+        .message {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            background: #e3f2fd;
+            color: #1a73e8;
+        }
+
+        .error {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .event-log {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            border: 1px solid #e9ecef;
+        }
+
+        .event-log h3 {
+            margin-top: 0;
+            color: #1a73e8;
+        }
+
+        .event-item {
+            padding: 8px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .event-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Voting System</h1>
+
+        <div class="section">
+            <h2>Add New Candidate</h2>
+            <div class="form-group">
+                <label for="candidateName">Candidate Name:</label>
+                <input type="text" id="candidateName" placeholder="Enter candidate name">
+            </div>
+            <button onclick="addCandidate()">Add Candidate</button>
+            <div id="addMessage" class="message"></div>
+        </div>
+
+        <div class="section">
+            <h2>Candidates</h2>
+            <div id="candidatesList" class="candidate-list"></div>
+        </div>
+
+        <div class="section">
+            <h2>Voting Events</h2>
+            <div id="eventLog" class="event-log"></div>
+        </div>
+    </div>
+
+    <script>
+        let web3;
+        let contract;
+        const contractAddress = '0x4A679253410272dd5232B3Ff7cF5dbB88f295319'; // Replace with your deployed contract address
+        const abi = [
+            {
+                "anonymous": false,
+                "inputs": [
+                    {
+                        "indexed": true,
+                        "internalType": "uint256",
+                        "name": "candidateId",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "votedEvent",
+                "type": "event"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "string",
+                        "name": "new_name",
+                        "type": "string"
+                    }
+                ],
+                "name": "addCandidate",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "candidates",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "id",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "name",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "totalVoters",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "candidateId",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "vote",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            }
+        ];
+
+        async function init() {
+            try {
+                // Connect to Hardhat provider
+                web3 = new Web3('http://127.0.0.1:8545');
+                contract = new web3.eth.Contract(abi, contractAddress);
+                
+                // Set up event listener with debugging
+                console.log('Setting up event listener...');
+                try {
+                    const events = await contract.getPastEvents('votedEvent', {
+                        fromBlock: 0,
+                        toBlock: 'latest'
+                    });
+                    console.log('Past events:', events);
+                    events.forEach(event => {
+                        addEventToLog(`Vote cast for candidate ID: ${event.returnValues.candidateId}`);
+                    });
+                } catch (eventError) {
+                    console.error('Error getting past events:', eventError);
+                }
+
+                await loadCandidates();
+            } catch (error) {
+                console.error('Error initializing Web3:', error);
+                showMessage('Error initializing the application', 'error');
+            }
+        }
+
+        async function addCandidate() {
+            try {
+                const name = document.getElementById('candidateName').value.trim();
+                if (!name) {
+                    showMessage('Please enter a candidate name', 'error');
+                    return;
+                }
+
+                const accounts = await web3.eth.getAccounts();
+                await contract.methods.addCandidate(name).send({ from: accounts[0] });
+
+                showMessage('Candidate added successfully!', 'success');
+                document.getElementById('candidateName').value = '';
+                await loadCandidates();
+            } catch (error) {
+                showMessage(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function vote(candidateId) {
+            try {
+                const accounts = await web3.eth.getAccounts();
+                await contract.methods.vote(candidateId).send({ from: accounts[0] });
+                showMessage('Vote cast successfully!', 'success');
+                await loadCandidates();
+                
+                // Add event to log immediately after voting
+                addEventToLog(`Vote cast for candidate ID: ${candidateId}`);
+            } catch (error) {
+                showMessage(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function loadCandidates() {
+            try {
+                const candidatesList = document.getElementById('candidatesList');
+                candidatesList.innerHTML = '';
+
+                // Load candidates one by one until we find an empty one
+                let i = 1;
+                while (true) {
+                    try {
+                        const candidate = await contract.methods.candidates(i).call();
+                        if (!candidate.name) break;
+
+                        const card = document.createElement('div');
+                        card.className = 'candidate-card';
+                        card.innerHTML = `
+                            <h3>${candidate.name}</h3>
+                            <p>ID: ${candidate.id}</p>
+                            <p>Total Votes: <span class="vote-count">${candidate.totalVoters}</span></p>
+                            <button onclick="vote(${candidate.id})">Vote</button>
+                        `;
+                        candidatesList.appendChild(card);
+                        i++;
+                    } catch (error) {
+                        break;
+                    }
+                }
+            } catch (error) {
+                showMessage(`Error loading candidates: ${error.message}`, 'error');
+            }
+        }
+
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('addMessage');
+            messageDiv.textContent = message;
+            messageDiv.className = `message ${type}`;
+            setTimeout(() => {
+                messageDiv.textContent = '';
+                messageDiv.className = 'message';
+            }, 3000);
+        }
+
+        function addEventToLog(eventText) {
+            const eventLog = document.getElementById('eventLog');
+            const eventItem = document.createElement('div');
+            eventItem.className = 'event-item';
+            eventItem.textContent = eventText;
+            eventLog.insertBefore(eventItem, eventLog.firstChild);
+        }
+
+        init();
+    </script>
+</body>
+
+</html>

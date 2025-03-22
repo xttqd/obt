@@ -131,10 +131,10 @@ npx hardhat test
 </details>
 
 <details>
-<summary>❌ Практическая работа 20</summary>
+<summary>✅ Практическая работа 20</summary>
 
 - [x] [Voter.sol](contracts/Voter.sol)
-- [ ] Voter.html
+- [x] [Voter.html](dapps/Voter.html)
 </details>
 
 <details>
