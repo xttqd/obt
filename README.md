@@ -155,7 +155,7 @@ npx hardhat test
 <summary>✅ Практическая работа 23</summary>
 
 - [x] [Dice.sol](contracts/Dice.sol)
-- [ ] Dice.html
+- [x] Dice.html
 </details>
 
 <details>
