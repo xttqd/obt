@@ -176,7 +176,7 @@ npx hardhat test
 <summary>✅ Практическая работа 26</summary>
 
 - [x] [DragonForge.sol](contracts/DragonForge.sol)
-- [ ] DragonForge.html
+- [x] [DragonForge.html](dapps/DragonForge.html)
 </details>
 
 <details>

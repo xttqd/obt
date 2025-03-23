@@ -10,6 +10,10 @@ contract DragonForge is DragonFarm {
         uint brains = uint(keccak256(abi.encode(food)));
         brains = brains % (10 ** 16);
         uint newDna = (id + brains) / 2;
-        dragons.push(Dragon(id, name, newDna));
+        
+        // Create new dragon with the same ID
+        dragons[id] = Dragon(id, name, newDna);
+        DragonOwner[id] = msg.sender;
+        ownerDragons[msg.sender]++;
     }
 }
