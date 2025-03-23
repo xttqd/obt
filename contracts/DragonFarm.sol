@@ -13,7 +13,7 @@ contract DragonFarm {
 
     Dragon[] public dragons;
     mapping (uint => address) public DragonOwner;
-    mapping (address => uint) ownerDragons;
+    mapping (address => uint) public ownerDragons;
 
     function GenerateRandomDna(string memory str) internal pure returns (uint) {
         uint rand = uint(keccak256(abi.encode(str)));
@@ -22,10 +22,10 @@ contract DragonFarm {
 
     function CreateDragon(string memory name) public {
         uint dna = GenerateRandomDna(name);
-        uint id = ownerDragons[msg.sender];
+        uint id = dragons.length;
         dragons.push(Dragon(id, name, dna));
         DragonOwner[id] = msg.sender;
-        emit NewDragon(id, name, dna);
         ownerDragons[msg.sender]++;
+        emit NewDragon(id, name, dna);
     }
 }

@@ -169,7 +169,7 @@ npx hardhat test
 <summary>✅ Практическая работа 25</summary>
 
 - [x] [DragonFarm.sol](contracts/DragonFarm.sol)
-- [ ] DragonFarm.html
+- [x] [DragonFarm.html](dapps/DragonFarm.html)
 </details>
 
 <details>
