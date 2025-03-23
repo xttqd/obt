@@ -54,7 +54,6 @@
 <body>
     <div class="container">
         <h1>Dice Game</h1>
-        <div id="connection-status"></div>
         <button onclick="playGame()">Play Game</button>
         <div id="loading" class="loading">Processing...</div>
         <div id="result" class="result"></div>
@@ -108,16 +107,10 @@
             try {
                 // Connect to Hardhat node
                 web3 = new Web3('http://127.0.0.1:8545');
-
                 // Create contract instance
                 diceContract = new web3.eth.Contract(contractABI, contractAddress);
-
-                document.getElementById('connection-status').innerHTML =
-                    '<p style="color: green;">Connected to Hardhat Network</p>';
             } catch (error) {
                 console.error('Error initializing Web3:', error);
-                document.getElementById('connection-status').innerHTML =
-                    '<p style="color: red;">Failed to connect to Hardhat Network</p>';
             }
         }
 
