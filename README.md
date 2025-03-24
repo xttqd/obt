@@ -220,11 +220,3 @@ npx hardhat test
 - [x] [MyCoin.sol](contracts/MyCoin.sol)
 - [x] [MyCoin.html](dapps/MyCoin.html)
 </details>
-
-<details>
-<summary>✅ Практическая работа 33</summary>
-
-- [x] [Dice.test.js](test/Dice.test.js)
-- [x] [Dice.variant1.test.js](test/Dice.variant1.test.js)
-- [x] [Dice.variant2.test.js](test/Dice.variant2.test.js)
-</details>
