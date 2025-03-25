@@ -218,7 +218,7 @@ npx hardhat test
 <details>
 <summary>Практическая работа 33</summary>
 
-- [ ] Dice.test.js
-- [ ] Dice.variant1.test.js
-- [ ] Dice.variant2.test.js
+- [] Dice.test.js
+- [] Dice.variant1.test.js
+- [] Dice.variant2.test.js
 </details>
