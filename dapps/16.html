@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>16</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container min-vh-100 d-flex align-items-center justify-content-center">
+        <div class="position-fixed bottom-0 end-0 p-3">
+            <button class="btn btn-outline-primary rounded-circle" type="button" data-bs-toggle="modal"
+                data-bs-target="#settingsModal" style="width: 3rem; height: 3rem;">
+                <i class="bi bi-gear"></i>
+            </button>
+        </div>
+
+        <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="settingsModalLabel">Адреса контрактов</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="noteAddress" class="form-label">Note</label>
+                            <input type="text" class="form-control" id="noteAddress">
+                        </div>
+                        <div class="mb-3">
+                            <label for="newNoteAddress" class="form-label">NewNote</label>
+                            <input type="text" class="form-control" id="newNoteAddress">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="updateAddresses">Обновить и сохранить
+                            адреса</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-100">
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header d-flex align-items-center justify-content-center" style="height: 80px;">
+                            <h5 class="mb-0 text-center">Заметка</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="mt-auto">
+                                <div class="mb-3">
+                                    <label for="noteName" class="form-label">Имя:</label>
+                                    <input type="text" class="form-control" id="noteName">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="noteNumber" class="form-label">Номер:</label>
+                                    <input type="number" class="form-control" id="noteNumber">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="noteLocation" class="form-label">Место:</label>
+                                    <input type="text" class="form-control" id="noteLocation">
+                                </div>
+                                <div id="noteResult" class="my-3"></div>
+                            </div>
+                            <div class="d-grid gap-2 mt-auto">
+                                <button class="btn btn-primary" id="setNote">Сохранить</button>
+                                <button class="btn btn-outline-primary" id="getNote">Получить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header d-flex align-items-center justify-content-center" style="height: 80px;">
+                            <h5 class="mb-0 text-center">Новая заметка</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="mt-auto">
+                                <div class="mb-3">
+                                    <label for="newNoteName" class="form-label">Имя:</label>
+                                    <input type="text" class="form-control" id="newNoteName">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="newNoteNumber" class="form-label">Номер:</label>
+                                    <input type="number" class="form-control" id="newNoteNumber">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="newNoteLocation" class="form-label">Место:</label>
+                                    <input type="text" class="form-control" id="newNoteLocation">
+                                </div>
+                                <div id="newNoteResult" class="my-3"></div>
+                            </div>
+                            <div class="d-grid gap-2 mt-auto">
+                                <button class="btn btn-primary" id="setNewNote">Сохранить</button>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="getNewNoteName" placeholder="Введите имя">
+                                    <button class="btn btn-outline-primary w-50" id="getNewNote">Получить</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+    <script>
+        let noteContract;
+        let newNoteContract;
+        let settingsModal;
+        let web3;
+
+        function loadAddresses() {
+            const savedAddresses = localStorage.getItem('contractAddresses');
+            if (savedAddresses) {
+                const addresses = JSON.parse(savedAddresses);
+                $('#noteAddress').val(addresses.note);
+                $('#newNoteAddress').val(addresses.newNote);
+                return addresses;
+            }
+            return null;
+        }
+
+        function saveAddresses() {
+            const addresses = {
+                note: $('#noteAddress').val(),
+                newNote: $('#newNoteAddress').val()
+            };
+            localStorage.setItem('contractAddresses', JSON.stringify(addresses));
+        }
+
+        async function init() {
+            web3 = new Web3('http://localhost:8545');
+
+            try {
+                const noteAddress = $('#noteAddress').val();
+                const newNoteAddress = $('#newNoteAddress').val();
+
+                noteContract = new web3.eth.Contract([
+                    {
+                        "inputs": [],
+                        "name": "get",
+                        "outputs": [
+                            {
+                                "internalType": "string",
+                                "name": "",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "",
+                                "type": "string"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [],
+                        "name": "location",
+                        "outputs": [
+                            {
+                                "internalType": "string",
+                                "name": "",
+                                "type": "string"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [],
+                        "name": "name",
+                        "outputs": [
+                            {
+                                "internalType": "string",
+                                "name": "",
+                                "type": "string"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "string",
+                                "name": "newName",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "newNumber",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "newLocation",
+                                "type": "string"
+                            }
+                        ],
+                        "name": "set",
+                        "outputs": [],
+                        "stateMutability": "nonpayable",
+                        "type": "function"
+                    }
+                ], noteAddress);
+
+                newNoteContract = new web3.eth.Contract([
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "string",
+                                "name": "name",
+                                "type": "string"
+                            }
+                        ],
+                        "name": "getUser",
+                        "outputs": [
+                            {
+                                "internalType": "uint256",
+                                "name": "number",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "location",
+                                "type": "string"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "string",
+                                "name": "name",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "number",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "location",
+                                "type": "string"
+                            }
+                        ],
+                        "name": "setUser",
+                        "outputs": [],
+                        "stateMutability": "nonpayable",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "string",
+                                "name": "",
+                                "type": "string"
+                            }
+                        ],
+                        "name": "users",
+                        "outputs": [
+                            {
+                                "internalType": "string",
+                                "name": "name",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "number",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "location",
+                                "type": "string"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "type": "function"
+                    }
+                ], newNoteAddress);
+
+            } catch (error) {
+                console.error('Ошибка инициализации контрактов:', error);
+            }
+        }
+
+        $(document).ready(function () {
+            loadAddresses();
+            init();
+
+            settingsModal = new bootstrap.Modal(document.getElementById('settingsModal'));
+
+            $('#updateAddresses').click(function () {
+                saveAddresses();
+                init();
+                alert('Адреса контрактов обновлены и сохранены!');
+                settingsModal.hide();
+            });
+
+            $('#setNote').click(async function () {
+                try {
+                    const accounts = await web3.eth.getAccounts();
+                    const name = $('#noteName').val();
+                    const number = parseInt($('#noteNumber').val());
+                    const location = $('#noteLocation').val();
+                    await noteContract.methods.set(name, number, location).send({ from: accounts[0] });
+                    $('#noteResult').text('Заметка успешно сохранена!');
+                } catch (error) {
+                    $('#noteResult').text(`Ошибка: ${error.message}`);
+                }
+            });
+
+            $('#getNote').click(async function () {
+                try {
+                    const result = await noteContract.methods.get().call();
+                    $('#noteResult').text(`Имя: ${result[0]}, Номер: ${result[1]}, Место: ${result[2]}`);
+                } catch (error) {
+                    $('#noteResult').text(`Ошибка: ${error.message}`);
+                }
+            });
+
+            $('#setNewNote').click(async function () {
+                try {
+                    const accounts = await web3.eth.getAccounts();
+                    const name = $('#newNoteName').val();
+                    const number = parseInt($('#newNoteNumber').val());
+                    const location = $('#newNoteLocation').val();
+                    await newNoteContract.methods.setUser(name, number, location).send({ from: accounts[0] });
+                    $('#newNoteResult').text('Заметка успешно сохранена!');
+                } catch (error) {
+                    $('#newNoteResult').text(`Ошибка: ${error.message}`);
+                }
+            });
+
+            $('#getNewNote').click(async function () {
+                try {
+                    const name = $('#getNewNoteName').val();
+                    const result = await newNoteContract.methods.getUser(name).call();
+                    $('#newNoteResult').text(`Номер: ${result[0]}, Место: ${result[1]}`);
+                } catch (error) {
+                    $('#newNoteResult').text(`Ошибка: ${error.message}`);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

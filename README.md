@@ -17,65 +17,59 @@ npx hardhat test
 <details>
 <summary>Практическая работа 4</summary>
 
-- [x] Factorial.sol
-- [x] BinaryToDecimal.sol
-- [x] OctalToDecimal.sol
+- [x] [Factorial.sol](contracts/4_Factorial.sol)
+- [x] [BinaryToDecimal.sol](contracts/4_BinaryToDecimal.sol)
+- [x] [OctalToDecimal.sol](contracts/4_OctalToDecimal.sol)
 </details>
 
 <details>
 <summary>Практическая работа 5</summary>
 
-- [x] DecimalToBinaryConverter.sol
-- [x] DecimalToHexConverter.sol
-- [x] BaseConverter.sol
+- [x] [DecimalToBinaryConverter.sol](contracts/5_DecimalToBinaryConverter.sol)
+- [x] [DecimalToHexConverter.sol](contracts/5_DecimalToHexConverter.sol)
+- [x] [BaseConverter.sol](contracts/5_BaseConverter.sol)
 </details>
 
 <details>
 <summary>Практическая работа 6</summary>
 
-- [x] Calculator.sol
-- [x] BitwiseCalculator.sol
-- [x] BitwiseCalculatorAdvanced.sol
+- [x] [Calculator.sol](contracts/6_Calculator.sol)
+- [x] [BitwiseCalculator.sol](contracts/6_BitwiseCalculator.sol)
+- [x] [BitwiseCalculatorAdvanced.sol](contracts/6_BitwiseCalculatorAdvanced.sol)
 </details>
 
 <details>
 <summary>Практическая работа 7</summary>
 
-- [x] Exponentiation.sol
-- [x] BitwiseShift.sol
-- [x] DateCalculator.sol
+- [x] [Exponentiation.sol](contracts/7_Exponentiation.sol)
+- [x] [BitwiseShift.sol](contracts/7_BitwiseShift.sol)
+- [x] [DateCalculator.sol](contracts/7_DateCalculator.sol)
 </details>
 
 <details>
 <summary>Практическая работа 8</summary>
 
-- [x] Note.sol
+- [x] [Note.sol](contracts/8_Note.sol)
 </details>
 
 <details>
 <summary>Практическая работа 9</summary>
 
-- [x] NewNote.sol
+- [x] [NewNote.sol](contracts/9_NewNote.sol)
 </details>
 
 <details>
 <summary>Практическая работа 10</summary>
 
-- [x] Greetings.sol
-- [ ] Greetings.html
+- [x] [Greetings.sol](contracts/10_Greetings.sol)
+- [x] [Greetings.html](dapps/10.html)
 </details>
 
 <details>
 <summary>Практическая работа 11</summary>
 
-- [x] Voting.sol
-- [ ] Voting.html
-</details>
-
-<details>
-<summary>Практическая работа 12</summary>
-
-- [ ] Dapp
+- [x] [Voting.sol](contracts/11_Voting.sol)
+- [x] [Voting.html](dapps/11.html)
 </details>
 
 <details>
@@ -99,15 +93,14 @@ npx hardhat test
 <details>
 <summary>Практическая работа 16</summary>
 
-- [ ] Note.html
-- [ ] NewNote.html
+- [x] [16.html](dapps/16.html)
 </details>
 
 <details>
 <summary>Практическая работа 17</summary>
 
-- [x] Owner.sol
-- [ ] Owner.html
+- [x] [Owner.sol](contracts/17_Owner.sol)
+- [x] [Owner.html](dapps/17.html)
 </details>
 
 <details>
@@ -148,8 +141,8 @@ npx hardhat test
 <details>
 <summary>Практическая работа 23</summary>
 
-- [x] Dice.sol
-- [ ] Dice.html
+- [x] [Dice.sol](contracts/23_Dice.sol)
+- [x] [Dice.html](dapps/23.html)
 </details>
 
 <details>

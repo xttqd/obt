@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>11</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container min-vh-100 d-flex align-items-center justify-content-center">
+        <div class="position-fixed bottom-0 end-0 p-3">
+            <button class="btn btn-outline-primary rounded-circle" type="button" data-bs-toggle="modal"
+                data-bs-target="#settingsModal" style="width: 3rem; height: 3rem;">
+                <i class="bi bi-gear"></i>
+            </button>
+        </div>
+
+        <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="settingsModalLabel">Адрес контракта</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="votingAddress" class="form-label">Voting Contract</label>
+                            <input type="text" class="form-control" id="votingAddress">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="updateAddress">Обновить и сохранить
+                            адрес</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-100">
+            <div class="row g-4 justify-content-center">
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header d-flex align-items-center justify-content-center" style="height: 80px;">
+                            <h5 class="mb-0 text-center">Смена аккаунта</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="mt-auto">
+                                <div class="mb-3">
+                                    <label class="form-label">Текущий аккаунт:</label>
+                                    <input type="text" class="form-control" id="currentAccount" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="newAccount" class="form-label">Новый аккаунт:</label>
+                                    <select class="form-select" id="newAccount">
+                                        <option value="">Выберите аккаунт</option>
+                                    </select>
+                                </div>
+                                <div id="switchAccountResult" class="my-3"></div>
+                            </div>
+                            <button class="btn btn-primary w-100 mt-auto" id="switchAccount">Сменить аккаунт</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header d-flex align-items-center justify-content-center" style="height: 80px;">
+                            <h5 class="mb-0 text-center">Голосование</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="mt-auto">
+                                <div class="mb-3">
+                                    <label for="voteCandidate" class="form-label">Выберите кандидата:</label>
+                                    <select class="form-select" id="voteCandidate">
+                                        <option value="">Выберите кандидата</option>
+                                    </select>
+                                </div>
+                                <div id="voteResult" class="my-3"></div>
+                            </div>
+                            <button class="btn btn-primary w-100 mt-auto" id="vote">Голосовать</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header d-flex align-items-center justify-content-center" style="height: 80px;">
+                            <h5 class="mb-0 text-center">Результаты голосования</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <div id="votingResults" class="mb-3"></div>
+                            <button class="btn btn-primary w-100 mt-auto" id="updateResults">Обновить
+                                результаты</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+    <script>
+        let votingContract;
+        let settingsModal;
+        let web3;
+        let currentAccount;
+
+        function loadAddress() {
+            const savedAddress = localStorage.getItem('votingAddress');
+            if (savedAddress) {
+                $('#votingAddress').val(savedAddress);
+                return savedAddress;
+            }
+            return null;
+        }
+
+        function saveAddress() {
+            const address = $('#votingAddress').val();
+            localStorage.setItem('votingAddress', address);
+        }
+
+        async function loadAccounts() {
+            try {
+                if (!web3) {
+                    console.error('Web3 не инициализирован');
+                    return;
+                }
+
+                const accounts = await web3.eth.getAccounts();
+                const select = $('#newAccount');
+                select.empty();
+                select.append('<option value="">Выберите аккаунт</option>');
+
+                accounts.forEach(account => {
+                    const shortAddress = account.slice(0, 6) + '...' + account.slice(-4);
+                    select.append(`<option value="${account}">${shortAddress}</option>`);
+                });
+
+                if (!currentAccount && accounts.length > 0) {
+                    currentAccount = accounts[0];
+                    $('#currentAccount').val(currentAccount.slice(0, 6) + '...' + currentAccount.slice(-4));
+                }
+            } catch (error) {
+                console.error('Ошибка загрузки аккаунтов:', error);
+            }
+        }
+
+        async function updateCandidatesList() {
+            try {
+                let i = 0;
+                const candidates = [];
+                
+                while (true) {
+                    try {
+                        const candidate = await votingContract.methods.candidateList(i).call();
+                        candidates.push(candidate);
+                        i++;
+                    } catch (error) {
+                        break;
+                    }
+                }
+
+                const voteSelect = $('#voteCandidate');
+                voteSelect.empty();
+                voteSelect.append('<option value="">Выберите кандидата</option>');
+                
+                candidates.forEach(candidate => {
+                    const name = web3.utils.hexToUtf8(candidate);
+                    voteSelect.append(`<option value="${candidate}">${name}</option>`);
+                });
+            } catch (error) {
+                console.error('Ошибка обновления списка кандидатов:', error);
+            }
+        }
+
+        async function updateVotingResults() {
+            try {
+                let i = 0;
+                const candidates = [];
+                const results = [];
+                
+                while (true) {
+                    try {
+                        const candidate = await votingContract.methods.candidateList(i).call();
+                        candidates.push(candidate);
+                        i++;
+                    } catch (error) {
+                        break;
+                    }
+                }
+
+                // Получаем голоса для каждого кандидата
+                for (const candidate of candidates) {
+                    const votes = await votingContract.methods.totalVotesFor(candidate).call();
+                    const name = web3.utils.hexToUtf8(candidate);
+                    results.push({ name, votes: parseInt(votes), candidate });
+                }
+
+                // Сортируем по количеству голосов (по убыванию)
+                results.sort((a, b) => b.votes - a.votes);
+
+                const resultsDiv = $('#votingResults');
+                resultsDiv.empty();
+
+                // Добавляем место в рейтинге
+                results.forEach((result, index) => {
+                    const place = index + 1;
+                    const medal = place === 1 ? '🥇' : place === 2 ? '🥈' : place === 3 ? '🥉' : `${place}.`;
+                    
+                    resultsDiv.append(`
+                        <div class="mb-3">
+                            <div class="d-flex align-items-center mb-1">
+                                <span class="me-2">${medal}</span>
+                                <span class="fw-bold">${result.name}</span>
+                                <span class="ms-auto">${result.votes} голосов</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: ${result.votes}%" 
+                                     aria-valuenow="${result.votes}" aria-valuemin="0" aria-valuemax="100">
+                                </div>
+                            </div>
+                        </div>
+                    `);
+                });
+            } catch (error) {
+                console.error('Ошибка обновления результатов:', error);
+                $('#votingResults').html(`<div class="text-danger">Ошибка: ${error.message}</div>`);
+            }
+        }
+
+        async function init() {
+            try {
+                web3 = new Web3('http://localhost:8545');
+
+                const votingAddress = $('#votingAddress').val();
+                if (!votingAddress) {
+                    console.error('Адрес контракта не установлен');
+                    return;
+                }
+
+                // Устанавливаем текущий аккаунт при инициализации
+                const accounts = await web3.eth.getAccounts();
+                if (accounts.length > 0) {
+                    currentAccount = accounts[0];
+                    $('#currentAccount').val(currentAccount.slice(0, 6) + '...' + currentAccount.slice(-4));
+                }
+
+                votingContract = new web3.eth.Contract([
+                    {
+                        "inputs": [],
+                        "stateMutability": "nonpayable",
+                        "type": "constructor"
+                    },
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "bytes32",
+                                "name": "candidate",
+                                "type": "bytes32"
+                            }
+                        ],
+                        "name": "voteForCandidate",
+                        "outputs": [],
+                        "stateMutability": "nonpayable",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "uint256",
+                                "name": "",
+                                "type": "uint256"
+                            }
+                        ],
+                        "name": "candidateList",
+                        "outputs": [
+                            {
+                                "internalType": "bytes32",
+                                "name": "",
+                                "type": "bytes32"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "address",
+                                "name": "user",
+                                "type": "address"
+                            }
+                        ],
+                        "name": "hasUserVoted",
+                        "outputs": [
+                            {
+                                "internalType": "bool",
+                                "name": "",
+                                "type": "bool"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "address",
+                                "name": "",
+                                "type": "address"
+                            }
+                        ],
+                        "name": "hasVoted",
+                        "outputs": [
+                            {
+                                "internalType": "bool",
+                                "name": "",
+                                "type": "bool"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "bytes32",
+                                "name": "candidate",
+                                "type": "bytes32"
+                            }
+                        ],
+                        "name": "totalVotesFor",
+                        "outputs": [
+                            {
+                                "internalType": "uint256",
+                                "name": "",
+                                "type": "uint256"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "bytes32",
+                                "name": "candidate",
+                                "type": "bytes32"
+                            }
+                        ],
+                        "name": "validCandidate",
+                        "outputs": [
+                            {
+                                "internalType": "bool",
+                                "name": "",
+                                "type": "bool"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "bytes32",
+                                "name": "",
+                                "type": "bytes32"
+                            }
+                        ],
+                        "name": "votesReceived",
+                        "outputs": [
+                            {
+                                "internalType": "uint256",
+                                "name": "",
+                                "type": "uint256"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "type": "function"
+                    }
+                ], votingAddress);
+
+                await updateCandidatesList();
+                await updateVotingResults();
+                await checkVotingStatus();
+            } catch (error) {
+                console.error('Ошибка инициализации:', error);
+            }
+        }
+
+        async function checkVotingStatus() {
+            try {
+                if (!currentAccount) {
+                    console.error('Аккаунт не выбран');
+                    return;
+                }
+
+                const hasVoted = await votingContract.methods.hasUserVoted(currentAccount).call();
+
+                if (hasVoted) {
+                    $('#vote').prop('disabled', true);
+                    $('#voteResult').html('<div class="alert alert-info">Вы уже проголосовали</div>');
+                } else {
+                    $('#vote').prop('disabled', false);
+                    $('#voteResult').empty();
+                }
+            } catch (error) {
+                console.error('Ошибка проверки статуса голосования:', error);
+                $('#voteResult').html(`<div class="alert alert-danger">Ошибка: ${error.message}</div>`);
+            }
+        }
+
+        $(document).ready(async function () {
+            loadAddress();
+            await init();
+            await loadAccounts();
+
+            settingsModal = new bootstrap.Modal(document.getElementById('settingsModal'));
+
+            $('#updateAddress').click(async function () {
+                saveAddress();
+                await init();
+                await loadAccounts();
+                alert('Адрес контракта обновлен и сохранен!');
+                settingsModal.hide();
+            });
+
+            $('#switchAccount').click(async function () {
+                try {
+                    const newAccount = $('#newAccount').val();
+                    if (!newAccount) {
+                        $('#switchAccountResult').html('<div class="alert alert-danger">Выберите новый аккаунт</div>');
+                        return;
+                    }
+                    currentAccount = newAccount;
+                    $('#currentAccount').val(currentAccount.slice(0, 6) + '...' + currentAccount.slice(-4));
+                    $('#switchAccountResult').html('<div class="alert alert-success">Аккаунт успешно изменен!</div>');
+                    await checkVotingStatus();
+                } catch (error) {
+                    $('#switchAccountResult').html(`<div class="alert alert-danger">Ошибка: ${error.message}</div>`);
+                }
+            });
+
+            $('#vote').click(async function () {
+                try {
+                    const candidate = $('#voteCandidate').val();
+                    if (!candidate) {
+                        $('#voteResult').html('<div class="alert alert-danger">Выберите кандидата</div>');
+                        return;
+                    }
+
+                    await votingContract.methods.voteForCandidate(candidate).send({ from: currentAccount });
+                    $('#voteResult').html('<div class="alert alert-success">Голос успешно отдан!</div>');
+                    $('#vote').prop('disabled', true);
+                    await updateVotingResults();
+                } catch (error) {
+                    $('#voteResult').html(`<div class="alert alert-danger">Ошибка: ${error.message}</div>`);
+                }
+            });
+
+            $('#updateResults').click(async function () {
+                await updateVotingResults();
+            });
+        });
+    </script>
+</body>
+
+</html>

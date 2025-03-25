@@ -2,7 +2,7 @@
 
 pragma solidity >=0.7.0 <0.9.0;
 
-contract Dice {
+contract Dice_2 {
     address public manager;
     address payable[] public point;
     modifier onlyManager() {

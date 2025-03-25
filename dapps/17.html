@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>17</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container min-vh-100 d-flex align-items-center justify-content-center">
+        <div class="position-fixed bottom-0 end-0 p-3">
+            <button class="btn btn-outline-primary rounded-circle" type="button" data-bs-toggle="modal"
+                data-bs-target="#settingsModal" style="width: 3rem; height: 3rem;">
+                <i class="bi bi-gear"></i>
+            </button>
+        </div>
+
+        <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="settingsModalLabel">Адрес контракта</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="ownerAddress" class="form-label">Owner</label>
+                            <input type="text" class="form-control" id="ownerAddress">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="updateAddress">Обновить и сохранить
+                            адрес</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-100">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header d-flex align-items-center justify-content-center" style="height: 80px;">
+                            <h5 class="mb-0 text-center">Добавить пользователя</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="mt-auto">
+                                <div class="mb-3">
+                                    <label for="userName" class="form-label">Имя пользователя:</label>
+                                    <input type="text" class="form-control" id="userName">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="userNumber" class="form-label">Номер:</label>
+                                    <input type="number" class="form-control" id="userNumber">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="userAge" class="form-label">Возраст:</label>
+                                    <input type="number" class="form-control" id="userAge">
+                                </div>
+                                <div id="setUserResult" class="my-3"></div>
+                            </div>
+                            <button class="btn btn-primary w-100 mt-auto" id="setUser">Добавить</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header d-flex align-items-center justify-content-center" style="height: 80px;">
+                            <h5 class="mb-0 text-center">Получить данные пользователя</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="mt-auto">
+                                <div class="mb-3">
+                                    <label for="getUserName" class="form-label">Имя пользователя:</label>
+                                    <input type="text" class="form-control" id="getUserName">
+                                </div>
+                                <div id="getUserResult" class="my-3"></div>
+                            </div>
+                            <button class="btn btn-primary w-100 mt-auto" id="getUser">Получить</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header d-flex align-items-center justify-content-center" style="height: 80px;">
+                            <h5 class="mb-0 text-center">Смена аккаунта</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="mt-auto">
+                                <div class="mb-3">
+                                    <label class="form-label">Текущий аккаунт:</label>
+                                    <input type="text" class="form-control" id="currentAccount" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="newAccount" class="form-label">Новый аккаунт:</label>
+                                    <select class="form-select" id="newAccount">
+                                        <option value="">Выберите аккаунт</option>
+                                    </select>
+                                </div>
+                                <div id="switchAccountResult" class="my-3"></div>
+                            </div>
+                            <button class="btn btn-primary w-100 mt-auto" id="switchAccount">Сменить аккаунт</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+    <script>
+        let ownerContract;
+        let settingsModal;
+        let currentAccount;
+        let web3;
+
+        function loadAddress() {
+            const savedAddress = localStorage.getItem('ownerAddress');
+            if (savedAddress) {
+                $('#ownerAddress').val(savedAddress);
+                return savedAddress;
+            }
+            return null;
+        }
+
+        function saveAddress() {
+            const address = $('#ownerAddress').val();
+            localStorage.setItem('ownerAddress', address);
+        }
+
+        async function init() {
+            try {
+                web3 = new Web3('http://localhost:8545');
+
+                const ownerAddress = $('#ownerAddress').val();
+                if (!ownerAddress) {
+                    console.error('Адрес контракта не установлен');
+                    return;
+                }
+
+                ownerContract = new web3.eth.Contract([
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "string",
+                                "name": "name",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "number",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "age",
+                                "type": "uint256"
+                            }
+                        ],
+                        "name": "setUser",
+                        "outputs": [],
+                        "stateMutability": "nonpayable",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [],
+                        "stateMutability": "nonpayable",
+                        "type": "constructor"
+                    },
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "string",
+                                "name": "name",
+                                "type": "string"
+                            }
+                        ],
+                        "name": "getUser",
+                        "outputs": [
+                            {
+                                "internalType": "uint256",
+                                "name": "number",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "age",
+                                "type": "uint256"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "string",
+                                "name": "",
+                                "type": "string"
+                            }
+                        ],
+                        "name": "users",
+                        "outputs": [
+                            {
+                                "internalType": "string",
+                                "name": "name",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "number",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "age",
+                                "type": "uint256"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "type": "function"
+                    }
+                ], ownerAddress);
+
+                await loadAccounts();
+            } catch (error) {
+                console.error('Ошибка инициализации:', error);
+            }
+        }
+
+        async function loadAccounts() {
+            try {
+                if (!web3) {
+                    console.error('Web3 не инициализирован');
+                    return;
+                }
+
+                const accounts = await web3.eth.getAccounts();
+                const select = $('#newAccount');
+                select.empty();
+                select.append('<option value="">Выберите аккаунт</option>');
+
+                accounts.forEach(account => {
+                    const shortAddress = account.slice(0, 6) + '...' + account.slice(-4);
+                    select.append(`<option value="${account}">${shortAddress}</option>`);
+                });
+
+                if (accounts.length > 0) {
+                    currentAccount = accounts[0];
+                    $('#currentAccount').val(currentAccount.slice(0, 6) + '...' + currentAccount.slice(-4));
+                }
+            } catch (error) {
+                console.error('Ошибка загрузки аккаунтов:', error);
+            }
+        }
+
+        $(document).ready(async function () {
+            loadAddress();
+            await init();
+
+            settingsModal = new bootstrap.Modal(document.getElementById('settingsModal'));
+
+            $('#updateAddress').click(async function () {
+                saveAddress();
+                await init();
+                alert('Адрес контракта обновлен и сохранен!');
+                settingsModal.hide();
+            });
+
+            $('#switchAccount').click(async function () {
+                try {
+                    const newAccount = $('#newAccount').val();
+                    if (!newAccount) {
+                        $('#switchAccountResult').text('Выберите новый аккаунт');
+                        return;
+                    }
+                    currentAccount = newAccount;
+                    $('#currentAccount').val(currentAccount.slice(0, 6) + '...' + currentAccount.slice(-4));
+                    $('#switchAccountResult').text('Аккаунт успешно изменен!');
+                } catch (error) {
+                    $('#switchAccountResult').text(`Ошибка: ${error.message}`);
+                }
+            });
+
+            $('#setUser').click(async function () {
+                try {
+                    if (!currentAccount) {
+                        $('#setUserResult').text('Аккаунт не выбран');
+                        return;
+                    }
+
+                    const name = $('#userName').val();
+                    const number = $('#userNumber').val();
+                    const age = $('#userAge').val();
+
+                    if (!name || !number || !age) {
+                        $('#setUserResult').text('Заполните все поля');
+                        return;
+                    }
+
+                    await ownerContract.methods.setUser(name, number, age).send({ from: currentAccount });
+                    $('#setUserResult').text('Пользователь успешно добавлен!');
+                } catch (error) {
+                    $('#setUserResult').text(`Ошибка: ${error.message}`);
+                }
+            });
+
+            $('#getUser').click(async function () {
+                try {
+                    if (!currentAccount) {
+                        $('#getUserResult').text('Аккаунт не выбран');
+                        return;
+                    }
+
+                    const name = $('#getUserName').val();
+                    if (!name) {
+                        $('#getUserResult').text('Введите имя пользователя');
+                        return;
+                    }
+
+                    const result = await ownerContract.methods.getUser(name).call({ from: currentAccount });
+                    $('#getUserResult').html(`Номер: ${result[0]}<br>Возраст: ${result[1]}`);
+                } catch (error) {
+                    $('#getUserResult').text(`Ошибка: ${error.message}`);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -2,7 +2,7 @@
 
 pragma solidity >=0.7.0 <0.9.0;
 
-import "./DragonFarm.sol";
+import "./25_DragonFarm.sol";
 
 contract DragonForge is DragonFarm {
     function Reforge(string memory name, uint id, uint food) public payable {
@@ -11,7 +11,6 @@ contract DragonForge is DragonFarm {
         brains = brains % (10 ** 16);
         uint newDna = (id + brains) / 2;
         
-        // Create new dragon with the same ID
         dragons[id] = Dragon(id, name, newDna);
         DragonOwner[id] = msg.sender;
         ownerDragons[msg.sender]++;
