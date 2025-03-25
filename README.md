@@ -211,7 +211,7 @@ npx hardhat test
 <details>
 <summary>Практическая работа 33</summary>
 
-- [] Dice.test.js
-- [] Dice.variant1.test.js
-- [] Dice.variant2.test.js
+- [x] [Dice.random.test.js](./test/Dice.random.test.js)
+- [x] [Dice.deploy.test.js](./test/Dice.deploy.test.js)
+- [x] [Dice.winner.test.js](./test/Dice.winner.test.js)
 </details>
