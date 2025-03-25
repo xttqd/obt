@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>15</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container min-vh-100 d-flex align-items-center justify-content-center">
+        <div class="position-fixed bottom-0 end-0 p-3">
+            <button class="btn btn-outline-primary rounded-circle" type="button" data-bs-toggle="modal"
+                data-bs-target="#settingsModal" style="width: 3rem; height: 3rem;">
+                <i class="bi bi-gear"></i>
+            </button>
+        </div>
+
+        <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="settingsModalLabel">Адреса контрактов</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="calculatorAddress" class="form-label">Calculator</label>
+                            <input type="text" class="form-control" id="calculatorAddress">
+                        </div>
+                        <div class="mb-3">
+                            <label for="bitwiseCalculatorAddress" class="form-label">BitwiseCalculator</label>
+                            <input type="text" class="form-control" id="bitwiseCalculatorAddress">
+                        </div>
+                        <div class="mb-3">
+                            <label for="bitwiseCalculatorAdvancedAddress"
+                                class="form-label">BitwiseCalculatorAdvanced</label>
+                            <input type="text" class="form-control" id="bitwiseCalculatorAdvancedAddress">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="updateAddresses">Обновить и сохранить
+                            адреса</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-100">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header d-flex align-items-center justify-content-center" style="height: 80px;">
+                            <h5 class="mb-0 text-center">Калькулятор</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="mt-auto">
+                                <div class="mb-3">
+                                    <label for="calculatorX" class="form-label">Первое число:</label>
+                                    <input type="number" class="form-control" id="calculatorX">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="calculatorY" class="form-label">Второе число:</label>
+                                    <input type="number" class="form-control" id="calculatorY">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="calculatorOperation" class="form-label">Операция:</label>
+                                    <select class="form-select" id="calculatorOperation">
+                                        <option value="+">Сложение (+)</option>
+                                        <option value="-">Вычитание (-)</option>
+                                        <option value="*">Умножение (*)</option>
+                                        <option value="/">Деление (/)</option>
+                                    </select>
+                                </div>
+                                <div id="calculatorResult" class="my-3"></div>
+                            </div>
+                            <button class="btn btn-primary w-100 mt-auto" id="calculate">Вычислить</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header d-flex align-items-center justify-content-center" style="height: 80px;">
+                            <h5 class="mb-0 text-center">Битовый калькулятор</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="mt-auto">
+                                <div class="mb-3">
+                                    <label for="bitwiseA" class="form-label">Первое число (8 бит):</label>
+                                    <input type="text" class="form-control" id="bitwiseA" maxlength="8">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="bitwiseB" class="form-label">Второе число (8 бит):</label>
+                                    <input type="text" class="form-control" id="bitwiseB" maxlength="8">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="bitwiseOperation" class="form-label">Операция:</label>
+                                    <select class="form-select" id="bitwiseOperation">
+                                        <option value="AND">И (AND)</option>
+                                        <option value="OR">ИЛИ (OR)</option>
+                                        <option value="NOT">НЕ (NOT)</option>
+                                    </select>
+                                </div>
+                                <div id="bitwiseResult" class="my-3"></div>
+                            </div>
+                            <button class="btn btn-primary w-100 mt-auto" id="calculateBitwise">Вычислить</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header d-flex align-items-center justify-content-center" style="height: 80px;">
+                            <h5 class="mb-0 text-center">Продвинутый битовый калькулятор</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="mt-auto">
+                                <div class="mb-3">
+                                    <label for="advancedBitwiseA" class="form-label">Первое число (8 бит):</label>
+                                    <input type="text" class="form-control" id="advancedBitwiseA" maxlength="8">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="advancedBitwiseB" class="form-label">Второе число (8 бит):</label>
+                                    <input type="text" class="form-control" id="advancedBitwiseB" maxlength="8">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="advancedBitwiseOperation" class="form-label">Операция:</label>
+                                    <select class="form-select" id="advancedBitwiseOperation">
+                                        <option value="NAND">И-НЕ (NAND)</option>
+                                        <option value="NOR">ИЛИ-НЕ (NOR)</option>
+                                        <option value="XOR">Исключающее ИЛИ (XOR)</option>
+                                    </select>
+                                </div>
+                                <div id="advancedBitwiseResult" class="my-3"></div>
+                            </div>
+                            <button class="btn btn-primary w-100 mt-auto"
+                                id="calculateAdvancedBitwise">Вычислить</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+    <script>
+        let calculatorContract;
+        let bitwiseCalculatorContract;
+        let bitwiseCalculatorAdvancedContract;
+        let settingsModal;
+
+        function loadAddresses() {
+            const savedAddresses = localStorage.getItem('contractAddresses');
+            if (savedAddresses) {
+                const addresses = JSON.parse(savedAddresses);
+                $('#calculatorAddress').val(addresses.calculator);
+                $('#bitwiseCalculatorAddress').val(addresses.bitwiseCalculator);
+                $('#bitwiseCalculatorAdvancedAddress').val(addresses.bitwiseCalculatorAdvanced);
+                return addresses;
+            }
+            return null;
+        }
+
+        function saveAddresses() {
+            const addresses = {
+                calculator: $('#calculatorAddress').val(),
+                bitwiseCalculator: $('#bitwiseCalculatorAddress').val(),
+                bitwiseCalculatorAdvanced: $('#bitwiseCalculatorAdvancedAddress').val()
+            };
+            localStorage.setItem('contractAddresses', JSON.stringify(addresses));
+        }
+
+        async function init() {
+            const web3 = new Web3('http://localhost:8545');
+
+            try {
+                const calculatorAddress = $('#calculatorAddress').val();
+                const bitwiseCalculatorAddress = $('#bitwiseCalculatorAddress').val();
+                const bitwiseCalculatorAdvancedAddress = $('#bitwiseCalculatorAdvancedAddress').val();
+
+                calculatorContract = new web3.eth.Contract([
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "int256",
+                                "name": "x",
+                                "type": "int256"
+                            },
+                            {
+                                "internalType": "int256",
+                                "name": "y",
+                                "type": "int256"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "oper",
+                                "type": "string"
+                            }
+                        ],
+                        "name": "calculate",
+                        "outputs": [
+                            {
+                                "internalType": "int256",
+                                "name": "",
+                                "type": "int256"
+                            }
+                        ],
+                        "stateMutability": "nonpayable",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [],
+                        "name": "result",
+                        "outputs": [
+                            {
+                                "internalType": "int256",
+                                "name": "",
+                                "type": "int256"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "type": "function"
+                    }
+                ], calculatorAddress);
+
+                bitwiseCalculatorContract = new web3.eth.Contract([
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "string",
+                                "name": "a",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "b",
+                                "type": "string"
+                            }
+                        ],
+                        "name": "AND",
+                        "outputs": [
+                            {
+                                "internalType": "string",
+                                "name": "",
+                                "type": "string"
+                            }
+                        ],
+                        "stateMutability": "nonpayable",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "string",
+                                "name": "a",
+                                "type": "string"
+                            }
+                        ],
+                        "name": "NOT",
+                        "outputs": [
+                            {
+                                "internalType": "string",
+                                "name": "",
+                                "type": "string"
+                            }
+                        ],
+                        "stateMutability": "nonpayable",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "string",
+                                "name": "a",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "b",
+                                "type": "string"
+                            }
+                        ],
+                        "name": "OR",
+                        "outputs": [
+                            {
+                                "internalType": "string",
+                                "name": "",
+                                "type": "string"
+                            }
+                        ],
+                        "stateMutability": "nonpayable",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [],
+                        "name": "result",
+                        "outputs": [
+                            {
+                                "internalType": "string",
+                                "name": "",
+                                "type": "string"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "type": "function"
+                    }
+                ], bitwiseCalculatorAddress);
+
+                bitwiseCalculatorAdvancedContract = new web3.eth.Contract([
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "string",
+                                "name": "a",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "b",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "oper",
+                                "type": "string"
+                            }
+                        ],
+                        "name": "calculate",
+                        "outputs": [
+                            {
+                                "internalType": "string",
+                                "name": "",
+                                "type": "string"
+                            }
+                        ],
+                        "stateMutability": "nonpayable",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [],
+                        "name": "result",
+                        "outputs": [
+                            {
+                                "internalType": "string",
+                                "name": "",
+                                "type": "string"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "type": "function"
+                    }
+                ], bitwiseCalculatorAdvancedAddress);
+
+            } catch (error) {
+                console.error('Ошибка инициализации контрактов:', error);
+            }
+        }
+
+        $(document).ready(function () {
+            loadAddresses();
+            init();
+
+            settingsModal = new bootstrap.Modal(document.getElementById('settingsModal'));
+
+            $('#updateAddresses').click(function () {
+                saveAddresses();
+                init();
+                alert('Адреса контрактов обновлены и сохранены!');
+                settingsModal.hide();
+            });
+
+            $('#calculate').click(async function () {
+                try {
+                    const x = parseInt($('#calculatorX').val());
+                    const y = parseInt($('#calculatorY').val());
+                    const operation = $('#calculatorOperation').val();
+                    const result = await calculatorContract.methods.calculate(x, y, operation).call();
+                    $('#calculatorResult').text(`Результат: ${result}`);
+                } catch (error) {
+                    $('#calculatorResult').text(`Ошибка: ${error.message}`);
+                }
+            });
+
+            $('#calculateBitwise').click(async function () {
+                try {
+                    const a = $('#bitwiseA').val();
+                    const b = $('#bitwiseB').val();
+                    const operation = $('#bitwiseOperation').val();
+                    let result;
+
+                    if (operation === 'NOT') {
+                        result = await bitwiseCalculatorContract.methods.NOT(a).call();
+                    } else {
+                        result = await bitwiseCalculatorContract.methods[operation](a, b).call();
+                    }
+
+                    $('#bitwiseResult').text(`Результат: ${result}`);
+                } catch (error) {
+                    $('#bitwiseResult').text(`Ошибка: ${error.message}`);
+                }
+            });
+
+            $('#calculateAdvancedBitwise').click(async function () {
+                try {
+                    const a = $('#advancedBitwiseA').val();
+                    const b = $('#advancedBitwiseB').val();
+                    const operation = $('#advancedBitwiseOperation').val();
+                    let result;
+
+                    if (operation === 'XOR') {
+                        result = await bitwiseCalculatorAdvancedContract.methods.calculate(a, a, operation).call();
+                    } else {
+                        result = await bitwiseCalculatorAdvancedContract.methods.calculate(a, b, operation).call();
+                    }
+
+                    $('#advancedBitwiseResult').text(`Результат: ${result}`);
+                } catch (error) {
+                    $('#advancedBitwiseResult').text(`Ошибка: ${error.message}`);
+                }
+            });
+
+            $('#bitwiseOperation').change(function() {
+                const operation = $(this).val();
+                if (operation === 'NOT') {
+                    $('#bitwiseB').closest('.mb-3').hide();
+                } else {
+                    $('#bitwiseB').closest('.mb-3').show();
+                }
+            });
+
+            $('#advancedBitwiseOperation').change(function() {
+                const operation = $(this).val();
+                if (operation === 'XOR') {
+                    $('#advancedBitwiseB').closest('.mb-3').hide();
+                } else {
+                    $('#advancedBitwiseB').closest('.mb-3').show();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

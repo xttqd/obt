@@ -5,7 +5,7 @@ pragma solidity >=0.7.0 <0.9.0;
 contract Voting {
     mapping(bytes32 => uint256) public votesReceived;
     bytes32[] public candidateList;
-    constructor(bytes32[] memory candidateNames) public {
+    constructor(bytes32[] memory candidateNames) {
         candidateList = candidateNames;
     }
 

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>14</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container min-vh-100 d-flex align-items-center justify-content-center">
+        <div class="position-fixed bottom-0 end-0 p-3">
+            <button class="btn btn-outline-primary rounded-circle" type="button" data-bs-toggle="modal"
+                data-bs-target="#settingsModal" style="width: 3rem; height: 3rem;">
+                <i class="bi bi-gear"></i>
+            </button>
+        </div>
+
+        <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="settingsModalLabel">Адреса контрактов</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="binaryConverterAddress" class="form-label">DecimalToBinaryConverter</label>
+                            <input type="text" class="form-control" id="binaryConverterAddress">
+                        </div>
+                        <div class="mb-3">
+                            <label for="hexConverterAddress" class="form-label">DecimalToHexConverter</label>
+                            <input type="text" class="form-control" id="hexConverterAddress">
+                        </div>
+                        <div class="mb-3">
+                            <label for="baseConverterAddress" class="form-label">BaseConverter</label>
+                            <input type="text" class="form-control" id="baseConverterAddress">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="updateAddresses">Обновить и сохранить
+                            адреса</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-100">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header d-flex align-items-center justify-content-center" style="height: 80px;">
+                            <h5 class="mb-0 text-center">Из десятичной в двоичную систему</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="mt-auto">
+                                <label for="decimalToBinaryInput" class="form-label">Введите десятичное число
+                                    (0-999999):</label>
+                                <input type="number" class="form-control" id="decimalToBinaryInput" min="0"
+                                    max="999999">
+                                <div id="decimalToBinaryResult" class="my-3"></div>
+                            </div>
+                            <button class="btn btn-primary w-100 mt-auto"
+                                id="convertDecimalToBinary">Конвертировать</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header d-flex align-items-center justify-content-center" style="height: 80px;">
+                            <h5 class="mb-0 text-center">Из десятичной в шестнадцатеричную систему</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="mt-auto">
+                                <label for="decimalToHexInput" class="form-label">Введите десятичное число
+                                    (0-999999):</label>
+                                <input type="number" class="form-control" id="decimalToHexInput" min="0" max="999999">
+                                <div id="decimalToHexResult" class="my-3"></div>
+                            </div>
+                            <button class="btn btn-primary w-100 mt-auto"
+                                id="convertDecimalToHex">Конвертировать</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header d-flex align-items-center justify-content-center" style="height: 80px;">
+                            <h5 class="mb-0 text-center">Между системами счисления</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="mt-auto">
+                                <div class="mb-3">
+                                    <label for="baseInput" class="form-label">Введите число:</label>
+                                    <input type="text" class="form-control" id="baseInput">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="baseFrom" class="form-label">Из системы счисления:</label>
+                                    <select class="form-select" id="baseFrom">
+                                        <option value="2">Двоичная (2)</option>
+                                        <option value="8">Восьмеричная (8)</option>
+                                        <option value="10">Десятичная (10)</option>
+                                        <option value="16">Шестнадцатеричная (16)</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="baseTo" class="form-label">В систему счисления:</label>
+                                    <select class="form-select" id="baseTo">
+                                        <option value="2">Двоичная (2)</option>
+                                        <option value="8">Восьмеричная (8)</option>
+                                        <option value="10">Десятичная (10)</option>
+                                        <option value="16">Шестнадцатеричная (16)</option>
+                                    </select>
+                                </div>
+                                <div id="baseResult" class="my-3"></div>
+                            </div>
+                            <button class="btn btn-primary w-100 mt-auto" id="convertBase">Конвертировать</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+    <script>
+        let binaryConverterContract;
+        let hexConverterContract;
+        let baseConverterContract;
+        let settingsModal;
+
+        function loadAddresses() {
+            const savedAddresses = localStorage.getItem('contractAddresses');
+            if (savedAddresses) {
+                const addresses = JSON.parse(savedAddresses);
+                $('#binaryConverterAddress').val(addresses.binaryConverter);
+                $('#hexConverterAddress').val(addresses.hexConverter);
+                $('#baseConverterAddress').val(addresses.baseConverter);
+                return addresses;
+            }
+            return null;
+        }
+
+        function saveAddresses() {
+            const addresses = {
+                binaryConverter: $('#binaryConverterAddress').val(),
+                hexConverter: $('#hexConverterAddress').val(),
+                baseConverter: $('#baseConverterAddress').val()
+            };
+            localStorage.setItem('contractAddresses', JSON.stringify(addresses));
+        }
+
+        async function init() {
+            const web3 = new Web3('http://localhost:8545');
+
+            try {
+                const binaryConverterAddress = $('#binaryConverterAddress').val();
+                const hexConverterAddress = $('#hexConverterAddress').val();
+                const baseConverterAddress = $('#baseConverterAddress').val();
+
+                binaryConverterContract = new web3.eth.Contract([
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "uint256",
+                                "name": "decimal",
+                                "type": "uint256"
+                            }
+                        ],
+                        "name": "toBinary",
+                        "outputs": [
+                            {
+                                "internalType": "string",
+                                "name": "",
+                                "type": "string"
+                            }
+                        ],
+                        "stateMutability": "pure",
+                        "type": "function"
+                    }
+                ], binaryConverterAddress);
+
+                hexConverterContract = new web3.eth.Contract([
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "uint256",
+                                "name": "decimal",
+                                "type": "uint256"
+                            }
+                        ],
+                        "name": "toHex",
+                        "outputs": [
+                            {
+                                "internalType": "string",
+                                "name": "",
+                                "type": "string"
+                            }
+                        ],
+                        "stateMutability": "pure",
+                        "type": "function"
+                    }
+                ], hexConverterAddress);
+
+                baseConverterContract = new web3.eth.Contract([
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "string",
+                                "name": "num",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "uint8",
+                                "name": "basefrom",
+                                "type": "uint8"
+                            },
+                            {
+                                "internalType": "uint8",
+                                "name": "baseto",
+                                "type": "uint8"
+                            }
+                        ],
+                        "name": "convertBase",
+                        "outputs": [
+                            {
+                                "internalType": "string",
+                                "name": "",
+                                "type": "string"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "type": "function"
+                    }
+                ], baseConverterAddress);
+
+            } catch (error) {
+                console.error('Ошибка инициализации контрактов:', error);
+            }
+        }
+
+        $(document).ready(function () {
+            loadAddresses();
+            init();
+
+            settingsModal = new bootstrap.Modal(document.getElementById('settingsModal'));
+
+            $('#updateAddresses').click(function () {
+                saveAddresses();
+                init();
+                alert('Адреса контрактов обновлены и сохранены!');
+                settingsModal.hide();
+            });
+
+            $('#convertDecimalToBinary').click(async function () {
+                try {
+                    const decimal = $('#decimalToBinaryInput').val();
+                    const result = await binaryConverterContract.methods.toBinary(decimal).call();
+                    $('#decimalToBinaryResult').text(`Двоичное число: ${result}`);
+                } catch (error) {
+                    $('#decimalToBinaryResult').text(`Ошибка: ${error.message}`);
+                }
+            });
+
+            $('#convertDecimalToHex').click(async function () {
+                try {
+                    const decimal = $('#decimalToHexInput').val();
+                    const result = await hexConverterContract.methods.toHex(decimal).call();
+                    $('#decimalToHexResult').text(`Шестнадцатеричное число: ${result}`);
+                } catch (error) {
+                    $('#decimalToHexResult').text(`Ошибка: ${error.message}`);
+                }
+            });
+
+            $('#convertBase').click(async function () {
+                try {
+                    const num = $('#baseInput').val();
+                    const baseFrom = parseInt($('#baseFrom').val());
+                    const baseTo = parseInt($('#baseTo').val());
+                    const result = await baseConverterContract.methods.convertBase(num, baseFrom, baseTo).call();
+                    $('#baseResult').text(`Результат: ${result}`);
+                } catch (error) {
+                    $('#baseResult').text(`Ошибка: ${error.message}`);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

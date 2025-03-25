@@ -1,7 +1,7 @@
 # <a href="https://github.com/xttqd/obt/releases/download/latest/master.zip"><img alt="Download" src="https://custom-icon-badges.demolab.com/badge/-%D0%A1%D0%BA%D0%B0%D1%87%D0%B0%D1%82%D1%8C%20%D1%80%D0%B5%D0%BF%D0%BE%D0%B7%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%B9-198754?style=for-the-badge&logo=download&logoColor=white"></a>
 
 <details>
-<summary>Команды для запуска</summary>
+<summary>Команды</summary>
 
 ```bash
 npm i
@@ -15,216 +15,210 @@ npx hardhat test
 </details>
 
 <details>
-<summary>✅ Практическая работа 4</summary>
+<summary>Практическая работа 4</summary>
 
-- [x] [Factorial.sol](contracts/Factorial.sol)
-- [x] [BinaryToDecimal.sol](contracts/BinaryToDecimal.sol)
-- [x] [OctalToDecimal.sol](contracts/OctalToDecimal.sol)
+- [x] Factorial.sol
+- [x] BinaryToDecimal.sol
+- [x] OctalToDecimal.sol
 </details>
 
 <details>
-<summary>✅ Практическая работа 5</summary>
+<summary>Практическая работа 5</summary>
 
-- [x] [DecimalToBinaryConverter.sol](contracts/DecimalToBinaryConverter.sol)
-- [x] [DecimalToHexConverter.sol](contracts/DecimalToHexConverter.sol)
-- [x] [BaseConverter.sol](contracts/BaseConverter.sol)
+- [x] DecimalToBinaryConverter.sol
+- [x] DecimalToHexConverter.sol
+- [x] BaseConverter.sol
 </details>
 
 <details>
-<summary>✅ Практическая работа 6</summary>
+<summary>Практическая работа 6</summary>
 
-- [x] [Calculator.sol](contracts/Calculator.sol)
-- [x] [BitwiseCalculator.sol](contracts/BitwiseCalculator.sol)
-- [x] [BitwiseCalculatorAdvanced.sol](contracts/BitwiseCalculatorAdvanced.sol)
+- [x] Calculator.sol
+- [x] BitwiseCalculator.sol
+- [x] BitwiseCalculatorAdvanced.sol
 </details>
 
 <details>
-<summary>✅ Практическая работа 7</summary>
+<summary>Практическая работа 7</summary>
 
-- [x] [Exponentiation.sol](contracts/Exponentiation.sol)
-- [x] [BitwiseShift.sol](contracts/BitwiseShift.sol)
-- [x] [DateCalculator.sol](contracts/DateCalculator.sol)
+- [x] Exponentiation.sol
+- [x] BitwiseShift.sol
+- [x] DateCalculator.sol
 </details>
 
 <details>
-<summary>✅ Практическая работа 8</summary>
+<summary>Практическая работа 8</summary>
 
-- [x] [Note.sol](contracts/Note.sol)
+- [x] Note.sol
 </details>
 
 <details>
-<summary>✅ Практическая работа 9</summary>
+<summary>Практическая работа 9</summary>
 
-- [x] [NewNote.sol](contracts/NewNote.sol)
+- [x] NewNote.sol
 </details>
 
 <details>
-<summary>✅ Практическая работа 10</summary>
+<summary>Практическая работа 10</summary>
 
-- [x] [Greetings.sol](contracts/Greetings.sol)
-- [x] [Greetings.html](dapps/Greetings.html)
+- [x] Greetings.sol
+- [ ] Greetings.html
 </details>
 
 <details>
-<summary>✅ Практическая работа 11</summary>
+<summary>Практическая работа 11</summary>
 
-- [x] [Voting.sol](contracts/Voting.sol)
+- [x] Voting.sol
 - [ ] Voting.html
 </details>
 
 <details>
-<summary>❌ Практическая работа 12</summary>
+<summary>Практическая работа 12</summary>
 
-- [ ] Upload File Blockchain dApp
+- [ ] Dapp
 </details>
 
 <details>
-<summary>✅ Практическая работа 13</summary>
+<summary>Практическая работа 13</summary>
 
-- [x] [Factorial.sol](contracts/Factorial.sol)
-- [x] [BinaryToDecimal.sol](contracts/BinaryToDecimal.sol)
-- [x] [OctalToDecimal.sol](contracts/OctalToDecimal.sol)
+- [x] [13.html](dapps/13.html)
 </details>
 
 <details>
-<summary>✅ Практическая работа 14</summary>
+<summary>Практическая работа 14</summary>
 
-- [x] [DecimalToBinaryConverter.html](dapps/DecimalToBinaryConverter.html)
-- [x] [DecimalToHexConverter.html](dapps/DecimalToHexConverter.html)
-- [x] [BaseConverter.html](dapps/BaseConverter.html)
+- [x] [14.html](dapps/14.html)
 </details>
 
 <details>
-<summary>✅ Практическая работа 15</summary>
+<summary>Практическая работа 15</summary>
 
-- [x] [Calculator.html](dapps/Calculator.html)
-- [x] [BitwiseCalculator.html](dapps/BitwiseCalculator.html)
-- [x] [BitwiseCalculatorAdvanced.html](dapps/BitwiseCalculatorAdvanced.html)
+- [x] [15.html](dapps/15.html)
 </details>
 
 <details>
-<summary>✅ Практическая работа 16</summary>
+<summary>Практическая работа 16</summary>
 
-- [x] [Note.html](dapps/Note.html)
-- [x] [NewNote.html](dapps/NewNote.html)
+- [ ] Note.html
+- [ ] NewNote.html
 </details>
 
 <details>
-<summary>✅ Практическая работа 17</summary>
+<summary>Практическая работа 17</summary>
 
-- [x] [Owner.sol](contracts/Owner.sol)
-- [x] [Owner.html](dapps/Owner.html)
+- [x] Owner.sol
+- [ ] Owner.html
 </details>
 
 <details>
-<summary>✅ Практическая работа 18</summary>
+<summary>Практическая работа 18</summary>
 
-- [x] [Grades.sol](contracts/Grades.sol)
-- [x] [Grades.html](dapps/Grades.html)
+- [x] Grades.sol
+- [ ] Grades.html
 </details>
 
 <details>
-<summary>✅ Практическая работа 19</summary>
+<summary>Практическая работа 19</summary>
 
-- [x] [Address.sol](contracts/Address.sol)
-- [x] [Address.html](dapps/Address.html)
+- [x] Address.sol
+- [ ] Address.html
 </details>
 
 <details>
-<summary>✅ Практическая работа 20</summary>
+<summary>Практическая работа 20</summary>
 
-- [x] [Voter.sol](contracts/Voter.sol)
-- [x] [Voter.html](dapps/Voter.html)
+- [x] Voter.sol
+- [ ] Voter.html
 </details>
 
 <details>
-<summary>✅ Практическая работа 21</summary>
+<summary>Практическая работа 21</summary>
 
-- [x] [RandomSeven.sol](contracts/RandomSeven.sol)
-- [x] [RandomSeven.html](dapps/RandomSeven.html)
+- [x] RandomSeven.sol
+- [ ] RandomSeven.html
 </details>
 
 <details>
-<summary>✅ Практическая работа 22</summary>
+<summary>Практическая работа 22</summary>
 
-- [x] [RLottery.sol](contracts/RLottery.sol)
-- [x] [RLottery.html](dapps/RLottery.html)
+- [x] RLottery.sol
+- [ ] RLottery.html
 </details>
 
 <details>
-<summary>✅ Практическая работа 23</summary>
+<summary>Практическая работа 23</summary>
 
-- [x] [Dice.sol](contracts/Dice.sol)
-- [x] Dice.html
+- [x] Dice.sol
+- [ ] Dice.html
 </details>
 
 <details>
-<summary>✅ Практическая работа 24</summary>
+<summary>Практическая работа 24</summary>
 
-- [x] [Dice_2.sol](contracts/Dice_2.sol)
+- [x] Dice_2.sol
 - [ ] Dice_2.html
 </details>
 
 <details>
-<summary>✅ Практическая работа 25</summary>
+<summary>Практическая работа 25</summary>
 
-- [x] [DragonFarm.sol](contracts/DragonFarm.sol)
-- [x] [DragonFarm.html](dapps/DragonFarm.html)
+- [x] DragonFarm.sol
+- [ ] DragonFarm.html
 </details>
 
 <details>
-<summary>✅ Практическая работа 26</summary>
+<summary>Практическая работа 26</summary>
 
-- [x] [DragonForge.sol](contracts/DragonForge.sol)
-- [x] [DragonForge.html](dapps/DragonForge.html)
+- [x] DragonForge.sol
+- [ ] DragonForge.html
 </details>
 
 <details>
-<summary>✅ Практическая работа 27</summary>
+<summary>Практическая работа 27</summary>
 
-- [x] [Transaction.sol](contracts/Transaction.sol)
-- [x] [Transaction.html](dapps/Transaction.html)
+- [x] Transaction.sol
+- [ ] Transaction.html
 </details>
 
 <details>
-<summary>✅ Практическая работа 28</summary>
+<summary>Практическая работа 28</summary>
 
-- [x] [Split.sol](contracts/Split.sol)
-- [x] [Split.html](dapps/Split.html)
+- [x] Split.sol
+- [ ] Split.html
 </details>
 
 <details>
-<summary>✅ Практическая работа 29</summary>
+<summary>Практическая работа 29</summary>
 
-- [x] [Donation.sol](contracts/Donation.sol)
-- [x] [Donation.html](dapps/Donation.html)
+- [x] Donation.sol
+- [ ] Donation.html
 </details>
 
 <details>
-<summary>✅ Практическая работа 30</summary>
+<summary>Практическая работа 30</summary>
 
-- [x] [BankDeposit.sol](contracts/BankDeposit.sol)
-- [x] [BankDeposit.html](dapps/BankDeposit.html)
+- [x] BankDeposit.sol
+- [ ] BankDeposit.html
 </details>
 
 <details>
-<summary>✅ Практическая работа 31</summary>
+<summary>Практическая работа 31</summary>
 
-- [x] [Insurance.sol](contracts/Insurance.sol)
-- [x] [Insurance.html](dapps/Insurance.html)
+- [x] Insurance.sol
+- [ ] Insurance.html
 </details>
 
 <details>
-<summary>✅ Практическая работа 32</summary>
+<summary>Практическая работа 32</summary>
 
-- [x] [MyCoin.sol](contracts/MyCoin.sol)
-- [x] [MyCoin.html](dapps/MyCoin.html)
+- [x] MyCoin.sol
+- [ ] MyCoin.html
 </details>
 
 <details>
-<summary>✅ Практическая работа 33</summary>
+<summary>Практическая работа 33</summary>
 
-- [x] [Dice.test.js](test/Dice.test.js)
-- [x] [Dice.variant1.test.js](test/Dice.variant1.test.js)
-- [x] [Dice.variant2.test.js](test/Dice.variant2.test.js)
+- [ ] Dice.test.js
+- [ ] Dice.variant1.test.js
+- [ ] Dice.variant2.test.js
 </details>
