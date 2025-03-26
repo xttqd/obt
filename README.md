@@ -106,29 +106,29 @@ npx hardhat test
 <details>
 <summary>Практическая работа 18</summary>
 
-- [x] Grades.sol
-- [ ] Grades.html
+- [x] [Grades.sol](contracts/18_Grades.sol)
+- [x] [Grades.html](dapps/18.html)
 </details>
 
 <details>
 <summary>Практическая работа 19</summary>
 
-- [x] Address.sol
-- [ ] Address.html
+- [x] [Address.sol](contracts/19_Address.sol)
+- [x] [Address.html](dapps/19.html)
 </details>
 
 <details>
 <summary>Практическая работа 20</summary>
 
-- [x] Voter.sol
-- [ ] Voter.html
+- [x] [Voter.sol](contracts/20_Voter.sol)
+- [x] [Voter.html](dapps/20.html)
 </details>
 
 <details>
 <summary>Практическая работа 21</summary>
 
-- [x] RandomSeven.sol
-- [ ] RandomSeven.html
+- [x] [RandomSeven.sol](contracts/21_RandomSeven.sol)
+- [x] [RandomSeven.html](dapps/21.html)
 </details>
 
 <details>
