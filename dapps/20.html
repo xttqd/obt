@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>20</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3"></div>
+    <div class="container min-vh-100 d-flex align-items-center justify-content-center">
+        <div class="position-fixed bottom-0 end-0 p-3">
+            <button class="btn btn-outline-primary rounded-circle" type="button" data-bs-toggle="modal"
+                data-bs-target="#settingsModal" style="width: 3rem; height: 3rem;">
+                <i class="bi bi-gear"></i>
+            </button>
+        </div>
+
+        <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="settingsModalLabel">Адрес контракта</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="voterContractAddress" class="form-label">Voter Contract</label>
+                            <input type="text" class="form-control" id="voterContractAddress">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="updateAddress">Обновить и сохранить
+                            адрес</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-100">
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header d-flex align-items-center justify-content-center" style="height: 80px;">
+                            <h5 class="mb-0 text-center">Добавить кандидата</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="mt-auto">
+                                <div class="mb-3">
+                                    <label for="candidateName" class="form-label">Имя кандидата:</label>
+                                    <input type="text" class="form-control" id="candidateName" placeholder="Введите имя">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary w-100 mt-auto" id="addCandidate">Добавить кандидата</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header d-flex align-items-center justify-content-center" style="height: 80px;">
+                            <h5 class="mb-0 text-center">Голосование</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="mt-auto">
+                                <div class="mb-3">
+                                    <label for="candidateSelect" class="form-label">Выберите кандидата:</label>
+                                    <select class="form-select" id="candidateSelect">
+                                        <option value="">Выберите кандидата...</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary w-100 mt-auto" id="vote">Голосовать</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header d-flex align-items-center justify-content-center" style="height: 80px;">
+                            <h5 class="mb-0 text-center">Результаты</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="results" style="max-height: 400px; overflow-y: auto;">
+                                <p class="text-muted text-center">Результаты голосования</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header d-flex align-items-center justify-content-center" style="height: 80px;">
+                            <h5 class="mb-0 text-center">Смена аккаунта</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="mt-auto">
+                                <div class="mb-3">
+                                    <label class="form-label">Текущий аккаунт:</label>
+                                    <input type="text" class="form-control" id="currentAccount" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="newAccount" class="form-label">Новый аккаунт:</label>
+                                    <select class="form-select" id="newAccount">
+                                        <option value="">Выберите аккаунт</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary w-100 mt-auto" id="switchAccount">Сменить аккаунт</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/socket.io/client-dist/socket.io.min.js"></script>
+    <script>
+        let voterContract;
+        let settingsModal;
+        let web3;
+        let socket;
+        let currentAccount;
+        let hasVoted = false;
+
+        function showToast(message, type = 'success') {
+            const toastContainer = $('.toast-container');
+            const toast = $(`
+                <div class="toast align-items-center text-white bg-${type} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            ${message}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            `);
+            toastContainer.append(toast);
+            const bsToast = new bootstrap.Toast(toast[0]);
+            bsToast.show();
+            toast.on('hidden.bs.toast', function () {
+                toast.remove();
+            });
+        }
+
+        function loadAddress() {
+            const savedAddress = localStorage.getItem('voterContractAddress');
+            if (savedAddress) {
+                $('#voterContractAddress').val(savedAddress);
+                return savedAddress;
+            }
+            return null;
+        }
+
+        function saveAddress() {
+            const address = $('#voterContractAddress').val();
+            localStorage.setItem('voterContractAddress', address);
+        }
+
+        async function loadAccounts() {
+            try {
+                if (!web3) {
+                    console.error('Web3 не инициализирован');
+                    return;
+                }
+
+                const accounts = await web3.eth.getAccounts();
+                const select = $('#newAccount');
+                select.empty();
+                select.append('<option value="">Выберите аккаунт</option>');
+
+                accounts.forEach(account => {
+                    const shortAddress = account.slice(0, 6) + '...' + account.slice(-4);
+                    select.append(`<option value="${account}">${shortAddress}</option>`);
+                });
+
+                if (accounts.length > 0) {
+                    currentAccount = accounts[0];
+                    $('#currentAccount').val(currentAccount.slice(0, 6) + '...' + currentAccount.slice(-4));
+                    await checkVotingStatus();
+                }
+            } catch (error) {
+                console.error('Ошибка загрузки аккаунтов:', error);
+            }
+        }
+
+        async function checkVotingStatus() {
+            try {
+                const hasVotedResult = await voterContract.methods.voters(currentAccount).call();
+                hasVoted = hasVotedResult;
+                $('#vote').prop('disabled', hasVoted);
+                if (hasVoted) {
+                    $('#vote').html('Вы уже проголосовали');
+                } else {
+                    $('#vote').html('Голосовать');
+                }
+            } catch (error) {
+                console.error('Ошибка проверки статуса голосования:', error);
+            }
+        }
+
+        async function init() {
+            web3 = new Web3('http://localhost:8545');
+
+            try {
+                const voterContractAddress = $('#voterContractAddress').val();
+
+                voterContract = new web3.eth.Contract([
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "string",
+                                "name": "new_name",
+                                "type": "string"
+                            }
+                        ],
+                        "name": "addCandidate",
+                        "outputs": [],
+                        "stateMutability": "nonpayable",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "uint256",
+                                "name": "candidateId",
+                                "type": "uint256"
+                            }
+                        ],
+                        "name": "vote",
+                        "outputs": [],
+                        "stateMutability": "nonpayable",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "uint256",
+                                "name": "",
+                                "type": "uint256"
+                            }
+                        ],
+                        "name": "candidates",
+                        "outputs": [
+                            {
+                                "internalType": "uint256",
+                                "name": "id",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "name",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "totalVoters",
+                                "type": "uint256"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "address",
+                                "name": "",
+                                "type": "address"
+                            }
+                        ],
+                        "name": "voters",
+                        "outputs": [
+                            {
+                                "internalType": "bool",
+                                "name": "",
+                                "type": "bool"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "type": "function"
+                    }
+                ], voterContractAddress);
+
+                // Подключаемся к Socket.IO серверу
+                socket = io('http://localhost:3000');
+                socket.on('voted', async (candidateId) => {
+                    await updateResults();
+                });
+
+                await loadAccounts();
+                await updateResults();
+            } catch (error) {
+                console.error('Ошибка инициализации:', error);
+            }
+        }
+
+        async function updateResults() {
+            try {
+                let resultsHtml = '';
+                let candidateSelectHtml = '<option value="">Выберите кандидата...</option>';
+                let i = 1;
+
+                while (true) {
+                    try {
+                        const candidate = await voterContract.methods.candidates(i).call();
+                        if (!candidate.name) break;
+
+                        resultsHtml += `
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <h6 class="card-title">${candidate.name}</h6>
+                                    <p class="card-text">Голосов: ${candidate.totalVoters}</p>
+                                </div>
+                            </div>
+                        `;
+
+                        candidateSelectHtml += `
+                            <option value="${i}">${candidate.name}</option>
+                        `;
+
+                        i++;
+                    } catch (error) {
+                        break;
+                    }
+                }
+
+                $('#results').html(resultsHtml || '<p class="text-muted text-center">Нет кандидатов</p>');
+                $('#candidateSelect').html(candidateSelectHtml);
+            } catch (error) {
+                $('#results').html(`
+                    <div class="text-danger text-center">
+                        Ошибка: ${error.message}
+                    </div>
+                `);
+            }
+        }
+
+        $(document).ready(function () {
+            loadAddress();
+            init();
+
+            settingsModal = new bootstrap.Modal(document.getElementById('settingsModal'));
+
+            $('#updateAddress').click(function () {
+                saveAddress();
+                init();
+                showToast('Адрес контракта обновлен и сохранен!');
+                settingsModal.hide();
+            });
+
+            $('#switchAccount').click(async function () {
+                try {
+                    const newAccount = $('#newAccount').val();
+                    if (!newAccount) {
+                        showToast('Выберите новый аккаунт', 'warning');
+                        return;
+                    }
+                    currentAccount = newAccount;
+                    $('#currentAccount').val(currentAccount.slice(0, 6) + '...' + currentAccount.slice(-4));
+                    
+                    // Сбрасываем состояние кнопки
+                    $('#vote').prop('disabled', false).html('Голосовать');
+                    hasVoted = false;
+                    
+                    // Проверяем статус голосования для нового аккаунта
+                    await checkVotingStatus();
+                    showToast('Аккаунт успешно изменен!');
+                } catch (error) {
+                    showToast(`Ошибка: ${error.message}`, 'danger');
+                }
+            });
+
+            $('#addCandidate').click(async function () {
+                try {
+                    const name = $('#candidateName').val();
+                    if (!name) {
+                        showToast('Пожалуйста, введите имя кандидата', 'warning');
+                        return;
+                    }
+
+                    await voterContract.methods.addCandidate(name).send({ from: currentAccount });
+                    showToast('Кандидат успешно добавлен!');
+                    $('#candidateName').val('');
+                    await updateResults();
+                } catch (error) {
+                    showToast(`Ошибка: ${error.message}`, 'danger');
+                }
+            });
+
+            $('#vote').click(async function () {
+                try {
+                    const candidateId = $('#candidateSelect').val();
+                    if (!candidateId) {
+                        showToast('Пожалуйста, выберите кандидата', 'warning');
+                        return;
+                    }
+
+                    await voterContract.methods.vote(candidateId).send({ from: currentAccount });
+                    hasVoted = true;
+                    $('#vote').prop('disabled', true).html('Вы уже проголосовали');
+                    showToast('Ваш голос учтен!');
+                    $('#candidateSelect').val('');
+                    await updateResults();
+                } catch (error) {
+                    showToast(`Ошибка: ${error.message}`, 'danger');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html> 
