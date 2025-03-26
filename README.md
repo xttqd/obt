@@ -188,13 +188,6 @@ npx hardhat test
 </details>
 
 <details>
-<summary>Практическая работа 30</summary>
-
-- [x] BankDeposit.sol
-- [ ] BankDeposit.html
-</details>
-
-<details>
 <summary>Практическая работа 31</summary>
 
 - [x] Insurance.sol
