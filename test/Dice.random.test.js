@@ -8,8 +8,4 @@ describe("Dice Random Number Generation", function () {
     await dice.deployed();
     expect(true).to.equal(true);
   });
-
-  it("Should generate different numbers", async function () {
-    expect(1).to.be.above(0);
-  });
 }); 

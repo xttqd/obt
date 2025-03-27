@@ -8,12 +8,4 @@ describe("Dice Winner Function", function () {
     await dice.deployed();
     expect(true).to.not.equal(false);
   });
-
-  it("Should handle draws properly", async function () {
-    expect("draw").to.be.a("string");
-  });
-
-  it("Should return valid numbers", async function () {
-    expect(42).to.be.a("number");
-  });
 }); 
