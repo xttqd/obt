@@ -183,15 +183,15 @@ npx hardhat test
 <details>
 <summary>Практическая работа 29</summary>
 
-- [x] Donation.sol
-- [ ] Donation.html
+- [x] [Donation.sol](contracts/29_Donation.sol)
+- [x] [Donation.html](dapps/29.html)
 </details>
 
 <details>
 <summary>Практическая работа 31</summary>
 
-- [x] Insurance.sol
-- [ ] Insurance.html
+- [x] [Insurance.sol](contracts/31_Insurance.sol)
+- [x] [Insurance.html](dapps/31.html)
 </details>
 
 <details>
