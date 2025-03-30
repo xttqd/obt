@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>29</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container min-vh-100 d-flex align-items-center justify-content-center">
+        <div class="position-fixed bottom-0 end-0 p-3">
+            <button class="btn btn-outline-primary rounded-circle" type="button" data-bs-toggle="modal"
+                data-bs-target="#settingsModal" style="width: 3rem; height: 3rem;">
+                <i class="bi bi-gear"></i>
+            </button>
+        </div>
+
+        <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="settingsModalLabel">Адрес контракта</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="donationAddress" class="form-label">Donation</label>
+                            <input type="text" class="form-control" id="donationAddress">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="updateAddress">Обновить и сохранить
+                            адрес</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-100">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header d-flex align-items-center justify-content-center" style="height: 80px;">
+                            <h5 class="mb-0 text-center">Пожертвовать</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="mt-auto">
+                                <div class="mb-3">
+                                    <label for="donationAmount" class="form-label">Сумма пожертвования (в ETH):</label>
+                                    <input type="number" class="form-control" id="donationAmount" step="0.001"
+                                        min="0.001" value="0.001">
+                                    <small class="text-muted">Минимальная сумма: 0.001 ETH</small>
+                                </div>
+                                <div id="donationResult" class="my-3"></div>
+                            </div>
+                            <button class="btn btn-primary w-100 mt-auto" id="donate">Пожертвовать</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header d-flex align-items-center justify-content-center" style="height: 80px;">
+                            <h5 class="mb-0 text-center">Списки жертвователей</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="overflow-auto mb-3" style="max-height: 200px;">
+                                <ul class="list-group" id="donatorsList">
+                                </ul>
+                            </div>
+                            <div id="getDonatorsResult" class="my-3"></div>
+                            <button class="btn btn-primary w-100 mt-auto" id="getDonators">Получить список</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header d-flex align-items-center justify-content-center" style="height: 80px;">
+                            <h5 class="mb-0 text-center">Управление контрактом</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="mt-auto">
+                                <div class="mb-3">
+                                    <label class="form-label">Текущий аккаунт:</label>
+                                    <input type="text" class="form-control" id="currentAccount" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="newAccount" class="form-label">Сменить аккаунт:</label>
+                                    <select class="form-select" id="newAccount">
+                                        <option value="">Выберите аккаунт</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Баланс контракта:</label>
+                                    <div id="contractBalance" class="form-control bg-light"></div>
+                                </div>
+                                <div id="transferResult" class="my-3"></div>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-secondary" id="switchAccount">Сменить аккаунт</button>
+                                <button class="btn btn-success" id="transferToOwner">Вывести средства</button>
+                                <button class="btn btn-primary" id="refreshBalance">Обновить баланс</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+    <script>
+        let donationContract;
+        let settingsModal;
+        let currentAccount;
+        let web3;
+
+        function loadAddress() {
+            const savedAddress = localStorage.getItem('donationAddress');
+            if (savedAddress) {
+                $('#donationAddress').val(savedAddress);
+                return savedAddress;
+            }
+            return null;
+        }
+
+        function saveAddress() {
+            const address = $('#donationAddress').val();
+            localStorage.setItem('donationAddress', address);
+        }
+
+        async function init() {
+            try {
+                web3 = new Web3('http://localhost:8545');
+
+                const donationAddress = $('#donationAddress').val();
+                if (!donationAddress) {
+                    console.error('Адрес контракта не установлен');
+                    return;
+                }
+
+                donationContract = new web3.eth.Contract([
+                    {
+                        "inputs": [],
+                        "stateMutability": "nonpayable",
+                        "type": "constructor"
+                    },
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "uint256",
+                                "name": "",
+                                "type": "uint256"
+                            }
+                        ],
+                        "name": "donators",
+                        "outputs": [
+                            {
+                                "internalType": "address",
+                                "name": "",
+                                "type": "address"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [],
+                        "name": "gatherDonation",
+                        "outputs": [],
+                        "stateMutability": "payable",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [],
+                        "name": "getDonators",
+                        "outputs": [
+                            {
+                                "internalType": "address[]",
+                                "name": "",
+                                "type": "address[]"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [],
+                        "name": "owner",
+                        "outputs": [
+                            {
+                                "internalType": "address payable",
+                                "name": "",
+                                "type": "address"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [],
+                        "name": "transferToOwner",
+                        "outputs": [],
+                        "stateMutability": "nonpayable",
+                        "type": "function"
+                    }
+                ], donationAddress);
+
+                await loadAccounts();
+                await refreshContractBalance();
+            } catch (error) {
+                console.error('Ошибка инициализации:', error);
+            }
+        }
+
+        async function loadAccounts() {
+            try {
+                if (!web3) {
+                    console.error('Web3 не инициализирован');
+                    return;
+                }
+
+                const accounts = await web3.eth.getAccounts();
+                const select = $('#newAccount');
+                select.empty();
+                select.append('<option value="">Выберите аккаунт</option>');
+
+                accounts.forEach(account => {
+                    const shortAddress = account.slice(0, 6) + '...' + account.slice(-4);
+                    select.append(`<option value="${account}">${shortAddress}</option>`);
+                });
+
+                if (accounts.length > 0) {
+                    currentAccount = accounts[0];
+                    $('#currentAccount').val(currentAccount.slice(0, 6) + '...' + currentAccount.slice(-4));
+                }
+            } catch (error) {
+                console.error('Ошибка загрузки аккаунтов:', error);
+            }
+        }
+
+        async function refreshContractBalance() {
+            try {
+                if (!web3 || !donationContract) {
+                    return;
+                }
+
+                const donationAddress = $('#donationAddress').val();
+                const balance = await web3.eth.getBalance(donationAddress);
+                $('#contractBalance').text(web3.utils.fromWei(balance, 'ether') + ' ETH');
+            } catch (error) {
+                console.error('Ошибка получения баланса:', error);
+                $('#contractBalance').text('Ошибка получения баланса');
+            }
+        }
+
+        $(document).ready(async function () {
+            loadAddress();
+            await init();
+
+            settingsModal = new bootstrap.Modal(document.getElementById('settingsModal'));
+
+            $('#updateAddress').click(async function () {
+                saveAddress();
+                await init();
+                alert('Адрес контракта обновлен и сохранен!');
+                settingsModal.hide();
+            });
+
+            $('#switchAccount').click(async function () {
+                try {
+                    const newAccount = $('#newAccount').val();
+                    if (!newAccount) {
+                        alert('Выберите новый аккаунт');
+                        return;
+                    }
+                    currentAccount = newAccount;
+                    $('#currentAccount').val(currentAccount.slice(0, 6) + '...' + currentAccount.slice(-4));
+                    alert('Аккаунт успешно изменен!');
+                } catch (error) {
+                    alert(`Ошибка: ${error.message}`);
+                }
+            });
+
+            $('#donate').click(async function () {
+                try {
+                    if (!currentAccount) {
+                        $('#donationResult').text('Аккаунт не выбран');
+                        return;
+                    }
+
+                    const amount = $('#donationAmount').val();
+                    if (!amount || parseFloat(amount) < 0.001) {
+                        $('#donationResult').text('Минимальная сумма пожертвования: 0.001 ETH');
+                        return;
+                    }
+
+                    const amountWei = web3.utils.toWei(amount, 'ether');
+                    await donationContract.methods.gatherDonation().send({
+                        from: currentAccount,
+                        value: amountWei
+                    });
+
+                    $('#donationResult').text('Пожертвование успешно отправлено!');
+                    await refreshContractBalance();
+                } catch (error) {
+                    $('#donationResult').text(`Ошибка: ${error.message}`);
+                }
+            });
+
+            $('#getDonators').click(async function () {
+                try {
+                    if (!currentAccount) {
+                        $('#getDonatorsResult').text('Аккаунт не выбран');
+                        return;
+                    }
+
+                    const donators = await donationContract.methods.getDonators().call({ from: currentAccount });
+                    const donatorsList = $('#donatorsList');
+                    donatorsList.empty();
+
+                    if (donators.length === 0) {
+                        $('#getDonatorsResult').text('Список жертвователей пуст');
+                        return;
+                    }
+
+                    donators.forEach((address, index) => {
+                        const shortAddress = address.slice(0, 10) + '...' + address.slice(-8);
+                        donatorsList.append(`<li class="list-group-item d-flex justify-content-between align-items-center">
+                            ${index + 1}. ${shortAddress}
+                            <span class="badge bg-primary rounded-pill">${address === currentAccount ? 'Вы' : ''}</span>
+                        </li>`);
+                    });
+
+                    $('#getDonatorsResult').text(`Всего жертвователей: ${donators.length}`);
+                } catch (error) {
+                    $('#getDonatorsResult').text(`Ошибка: ${error.message}`);
+                }
+            });
+
+            $('#transferToOwner').click(async function () {
+                try {
+                    if (!currentAccount) {
+                        $('#transferResult').text('Аккаунт не выбран');
+                        return;
+                    }
+
+                    const owner = await donationContract.methods.owner().call();
+                    if (currentAccount.toLowerCase() !== owner.toLowerCase()) {
+                        $('#transferResult').text('Только владелец контракта может вывести средства');
+                        return;
+                    }
+
+                    await donationContract.methods.transferToOwner().send({ from: currentAccount });
+                    $('#transferResult').text('Средства успешно выведены!');
+                    await refreshContractBalance();
+                } catch (error) {
+                    $('#transferResult').text(`Ошибка: ${error.message}`);
+                }
+            });
+
+            $('#refreshBalance').click(async function () {
+                await refreshContractBalance();
+            });
+        });
+    </script>
+</body>
+
+</html>
