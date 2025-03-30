@@ -1,5 +1,10 @@
 # <a href="https://github.com/xttqd/obt/releases/download/latest/master.zip"><img alt="Download" src="https://custom-icon-badges.demolab.com/badge/-%D0%A1%D0%BA%D0%B0%D1%87%D0%B0%D1%82%D1%8C%20%D1%80%D0%B5%D0%BF%D0%BE%D0%B7%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%B9-198754?style=for-the-badge&logo=download&logoColor=white"></a>
 
+<p align="center">
+  <img src=".github/bg.jpg" alt="Background Image" width="100%" />
+</p>
+
+
 <details>
 <summary>Команды</summary>
 
@@ -13,6 +18,9 @@ npx hardhat node
 npx hardhat test
 ```
 </details>
+
+<details>
+<summary>Работы</summary>
 
 <details>
 <summary>Практическая работа 4</summary>
@@ -99,36 +107,36 @@ npx hardhat test
 <details>
 <summary>Практическая работа 17</summary>
 
-- [x] [Owner.sol](contracts/17_Owner.sol)
-- [x] [Owner.html](dapps/17.html)
+- [x] [17_Owner.sol](contracts/17_Owner.sol)
+- [x] [17.html](dapps/17.html)
 </details>
 
 <details>
 <summary>Практическая работа 18</summary>
 
-- [x] [Grades.sol](contracts/18_Grades.sol)
-- [x] [Grades.html](dapps/18.html)
+- [x] [18_Grades.sol](contracts/18_Grades.sol)
+- [x] [18.html](dapps/18.html)
 </details>
 
 <details>
 <summary>Практическая работа 19</summary>
 
-- [x] [Address.sol](contracts/19_Address.sol)
-- [x] [Address.html](dapps/19.html)
+- [x] [19_Address.sol](contracts/19_Address.sol)
+- [x] [19.html](dapps/19.html)
 </details>
 
 <details>
 <summary>Практическая работа 20</summary>
 
-- [x] [Voter.sol](contracts/20_Voter.sol)
-- [x] [Voter.html](dapps/20.html)
+- [x] [20_Voter.sol](contracts/20_Voter.sol)
+- [x] [20.html](dapps/20.html)
 </details>
 
 <details>
 <summary>Практическая работа 21</summary>
 
-- [x] [RandomSeven.sol](contracts/21_RandomSeven.sol)
-- [x] [RandomSeven.html](dapps/21.html)
+- [x] [21_RandomSeven.sol](contracts/21_RandomSeven.sol)
+- [x] [21.html](dapps/21.html)
 </details>
 
 <details>
@@ -141,8 +149,8 @@ npx hardhat test
 <details>
 <summary>Практическая работа 23</summary>
 
-- [x] [Dice.sol](contracts/23_Dice.sol)
-- [x] [Dice.html](dapps/23.html)
+- [x] [23_Dice.sol](contracts/23_Dice.sol)
+- [x] [23.html](dapps/23.html)
 </details>
 
 <details>
@@ -184,14 +192,14 @@ npx hardhat test
 <summary>Практическая работа 29</summary>
 
 - [x] [Donation.sol](contracts/29_Donation.sol)
-- [x] [Donation.html](dapps/29.html)
+- [x] [29.html](dapps/29.html)
 </details>
 
 <details>
 <summary>Практическая работа 31</summary>
 
 - [x] [Insurance.sol](contracts/31_Insurance.sol)
-- [x] [Insurance.html](dapps/31.html)
+- [x] [31.html](dapps/31.html)
 </details>
 
 <details>
@@ -207,4 +215,6 @@ npx hardhat test
 - [x] [Dice.random.test.js](./test/Dice.random.test.js)
 - [x] [Dice.deploy.test.js](./test/Dice.deploy.test.js)
 - [x] [Dice.winner.test.js](./test/Dice.winner.test.js)
+</details>
+
 </details>
