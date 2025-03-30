@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>31</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container min-vh-100 d-flex align-items-center justify-content-center">
+        <div class="position-fixed bottom-0 end-0 p-3">
+            <button class="btn btn-outline-primary rounded-circle" type="button" data-bs-toggle="modal"
+                data-bs-target="#settingsModal" style="width: 3rem; height: 3rem;">
+                <i class="bi bi-gear"></i>
+            </button>
+        </div>
+
+        <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="settingsModalLabel">Адрес контракта</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="insuranceAddress" class="form-label">Insurance</label>
+                            <input type="text" class="form-control" id="insuranceAddress">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="updateAddress">Обновить и сохранить
+                            адрес</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-100">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header d-flex align-items-center justify-content-center" style="height: 80px;">
+                            <h5 class="mb-0 text-center">Создать медицинскую запись</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="mt-auto">
+                                <div class="mb-3">
+                                    <label for="recordId" class="form-label">ID записи:</label>
+                                    <input type="number" class="form-control" id="recordId" min="1">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="recordName" class="form-label">Название процедуры:</label>
+                                    <input type="text" class="form-control" id="recordName">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="recordDate" class="form-label">Дата:</label>
+                                    <input type="text" class="form-control" id="recordDate" placeholder="ДД.ММ.ГГГГ">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="recordPrice" class="form-label">Стоимость (в Wei):</label>
+                                    <input type="number" class="form-control" id="recordPrice" min="1">
+                                </div>
+                                <div id="createRecordResult" class="my-3"></div>
+                            </div>
+                            <button class="btn btn-primary w-100 mt-auto" id="createRecord">Создать запись</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header d-flex align-items-center justify-content-center" style="height: 80px;">
+                            <h5 class="mb-0 text-center">Подписать запись</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="my-auto">
+                                <div class="mb-3">
+                                    <label for="signRecordId" class="form-label">ID записи для подписи:</label>
+                                    <input type="number" class="form-control" id="signRecordId" min="1">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="signAmount" class="form-label">Сумма для отправки (ETH):</label>
+                                    <input type="number" class="form-control" id="signAmount" min="0" step="0.001" value="0">
+                                    <small class="text-muted">При подписи вы можете отправить ETH, которые будут переведены больнице, когда запись получит две подписи.</small>
+                                </div>
+                                <div id="signRecordResult" class="my-3"></div>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-secondary w-100" id="viewRecord">Просмотреть запись</button>
+                                <button class="btn btn-primary w-100 mt-auto" id="signRecord">Подписать запись</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header d-flex align-items-center justify-content-center" style="height: 80px;">
+                            <h5 class="mb-0 text-center">Управление аккаунтом</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="my-auto">
+                                <div class="mb-3">
+                                    <label class="form-label">Текущий аккаунт:</label>
+                                    <input type="text" class="form-control" id="currentAccount" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="newAccount" class="form-label">Сменить аккаунт:</label>
+                                    <select class="form-select" id="newAccount">
+                                        <option value="">Выберите аккаунт</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Баланс контракта:</label>
+                                    <div id="contractBalance" class="form-control"></div>
+                                </div>
+                                <div id="switchAccountResult" class="my-3"></div>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-secondary" id="switchAccount">Сменить аккаунт</button>
+                                <button class="btn btn-primary" id="refreshBalance">Обновить баланс</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+    <script>
+        let insuranceContract;
+        let settingsModal;
+        let currentAccount;
+        let web3;
+
+        function loadAddress() {
+            const savedAddress = localStorage.getItem('insuranceAddress');
+            if (savedAddress) {
+                $('#insuranceAddress').val(savedAddress);
+                return savedAddress;
+            }
+            return null;
+        }
+
+        function saveAddress() {
+            const address = $('#insuranceAddress').val();
+            localStorage.setItem('insuranceAddress', address);
+        }
+
+        async function init() {
+            try {
+                web3 = new Web3('http://localhost:8545');
+
+                const insuranceAddress = $('#insuranceAddress').val();
+                if (!insuranceAddress) {
+                    console.error('Адрес контракта не установлен');
+                    return;
+                }
+
+                insuranceContract = new web3.eth.Contract([
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "uint256",
+                                "name": "_ID",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "_Name",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "_date",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "price",
+                                "type": "uint256"
+                            }
+                        ],
+                        "name": "newRecord",
+                        "outputs": [],
+                        "stateMutability": "nonpayable",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [],
+                        "stateMutability": "nonpayable",
+                        "type": "constructor"
+                    },
+                    {
+                        "anonymous": false,
+                        "inputs": [
+                            {
+                                "indexed": false,
+                                "internalType": "uint256",
+                                "name": "ID",
+                                "type": "uint256"
+                            },
+                            {
+                                "indexed": false,
+                                "internalType": "string",
+                                "name": "testName",
+                                "type": "string"
+                            },
+                            {
+                                "indexed": false,
+                                "internalType": "string",
+                                "name": "date",
+                                "type": "string"
+                            },
+                            {
+                                "indexed": false,
+                                "internalType": "uint256",
+                                "name": "price",
+                                "type": "uint256"
+                            }
+                        ],
+                        "name": "recordCreated",
+                        "type": "event"
+                    },
+                    {
+                        "anonymous": false,
+                        "inputs": [
+                            {
+                                "indexed": false,
+                                "internalType": "uint256",
+                                "name": "ID",
+                                "type": "uint256"
+                            },
+                            {
+                                "indexed": false,
+                                "internalType": "string",
+                                "name": "testName",
+                                "type": "string"
+                            },
+                            {
+                                "indexed": false,
+                                "internalType": "string",
+                                "name": "date",
+                                "type": "string"
+                            },
+                            {
+                                "indexed": false,
+                                "internalType": "uint256",
+                                "name": "price",
+                                "type": "uint256"
+                            }
+                        ],
+                        "name": "recordSigned",
+                        "type": "event"
+                    },
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "uint256",
+                                "name": "_ID",
+                                "type": "uint256"
+                            }
+                        ],
+                        "name": "signRecord",
+                        "outputs": [],
+                        "stateMutability": "payable",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "uint256",
+                                "name": "",
+                                "type": "uint256"
+                            }
+                        ],
+                        "name": "all_record",
+                        "outputs": [
+                            {
+                                "internalType": "address",
+                                "name": "Addr",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "ID",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "Name",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "date",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "price",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "bool",
+                                "name": "isValue",
+                                "type": "bool"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "signatureCount",
+                                "type": "uint256"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [],
+                        "name": "hospital",
+                        "outputs": [
+                            {
+                                "internalType": "address payable",
+                                "name": "",
+                                "type": "address"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [],
+                        "name": "insurer",
+                        "outputs": [
+                            {
+                                "internalType": "address payable",
+                                "name": "",
+                                "type": "address"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "uint256",
+                                "name": "",
+                                "type": "uint256"
+                            }
+                        ],
+                        "name": "recordsArr",
+                        "outputs": [
+                            {
+                                "internalType": "uint256",
+                                "name": "",
+                                "type": "uint256"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "type": "function"
+                    }
+                ], insuranceAddress);
+
+                await loadAccounts();
+                await refreshContractBalance();
+                await updateAccountRole();
+            } catch (error) {
+                console.error('Ошибка инициализации:', error);
+            }
+        }
+
+        async function loadAccounts() {
+            try {
+                if (!web3) {
+                    console.error('Web3 не инициализирован');
+                    return;
+                }
+
+                const accounts = await web3.eth.getAccounts();
+                const select = $('#newAccount');
+                select.empty();
+                select.append('<option value="">Выберите аккаунт</option>');
+
+                accounts.forEach(account => {
+                    const shortAddress = account.slice(0, 6) + '...' + account.slice(-4);
+                    select.append(`<option value="${account}">${shortAddress}</option>`);
+                });
+
+                if (accounts.length > 0) {
+                    currentAccount = accounts[0];
+                    $('#currentAccount').val(currentAccount.slice(0, 6) + '...' + currentAccount.slice(-4));
+                }
+            } catch (error) {
+                console.error('Ошибка загрузки аккаунтов:', error);
+            }
+        }
+
+        async function refreshContractBalance() {
+            try {
+                if (!web3 || !insuranceContract) {
+                    return;
+                }
+
+                const insuranceAddress = $('#insuranceAddress').val();
+                const balance = await web3.eth.getBalance(insuranceAddress);
+                $('#contractBalance').text(web3.utils.fromWei(balance, 'ether') + ' ETH (' + balance + ' Wei)');
+            } catch (error) {
+                console.error('Ошибка получения баланса:', error);
+                $('#contractBalance').text('Ошибка получения баланса');
+            }
+        }
+
+        async function updateAccountRole() {
+            try {
+                if (!currentAccount || !insuranceContract) {
+                    return;
+                }
+
+                const hospital = await insuranceContract.methods.hospital().call();
+                const insurer = await insuranceContract.methods.insurer().call();
+
+                let roleText = "Пациент";
+                if (currentAccount.toLowerCase() === hospital.toLowerCase()) {
+                    roleText = "Больница";
+                } else if (currentAccount.toLowerCase() === insurer.toLowerCase()) {
+                    roleText = "Страховщик";
+                }
+
+                $('#accountRole').text(roleText);
+            } catch (error) {
+                console.error('Ошибка определения роли:', error);
+                $('#accountRole').text('Неизвестно');
+            }
+        }
+
+        $(document).ready(async function () {
+            loadAddress();
+            await init();
+
+            settingsModal = new bootstrap.Modal(document.getElementById('settingsModal'));
+
+            $('#updateAddress').click(async function () {
+                saveAddress();
+                await init();
+                alert('Адрес контракта обновлен и сохранен!');
+                settingsModal.hide();
+            });
+
+            $('#switchAccount').click(async function () {
+                try {
+                    const newAccount = $('#newAccount').val();
+                    if (!newAccount) {
+                        $('#switchAccountResult').text('Выберите новый аккаунт');
+                        return;
+                    }
+                    currentAccount = newAccount;
+                    $('#currentAccount').val(currentAccount.slice(0, 6) + '...' + currentAccount.slice(-4));
+                    $('#switchAccountResult').text('Аккаунт успешно изменен!');
+                    await updateAccountRole();
+                } catch (error) {
+                    $('#switchAccountResult').text(`Ошибка: ${error.message}`);
+                }
+            });
+
+            $('#refreshBalance').click(async function () {
+                await refreshContractBalance();
+            });
+
+            $('#createRecord').click(async function () {
+                try {
+                    if (!currentAccount) {
+                        $('#createRecordResult').text('Аккаунт не выбран');
+                        return;
+                    }
+
+                    const id = $('#recordId').val();
+                    const name = $('#recordName').val();
+                    const date = $('#recordDate').val();
+                    const price = $('#recordPrice').val();
+
+                    if (!id || !name || !date || !price) {
+                        $('#createRecordResult').text('Заполните все поля');
+                        return;
+                    }
+
+                    // Проверим, существует ли уже запись с таким ID
+                    try {
+                        const existingRecord = await insuranceContract.methods.all_record(id).call();
+                        if (existingRecord.isValue) {
+                            $('#createRecordResult').text(`Запись с ID ${id} уже существует. Используйте другой ID.`);
+                            return;
+                        }
+                    } catch (checkError) {
+                        console.log("Ошибка проверки существующей записи:", checkError);
+                    }
+
+                    console.log(`Создаем запись: ID=${id}, Name=${name}, Date=${date}, Price=${price}`);
+                    
+                    const result = await insuranceContract.methods.newRecord(id, name, date, price).send({ 
+                        from: currentAccount,
+                        gas: 500000 // Увеличиваем лимит газа для транзакции
+                    });
+                    
+                    console.log("Результат транзакции:", result);
+                    $('#createRecordResult').text('Запись успешно создана!');
+
+                    // Очистка полей после создания записи
+                    $('#recordId').val('');
+                    $('#recordName').val('');
+                    $('#recordDate').val('');
+                    $('#recordPrice').val('');
+                } catch (error) {
+                    console.error("Полная ошибка:", error);
+                    
+                    let errorMsg = `Ошибка: ${error.message}`;
+                    
+                    // Анализ возможных причин ошибки
+                    if (error.message.includes("0x")) {
+                        errorMsg += '<br><br>Возможные причины:<br>';
+                        errorMsg += '- Запись с таким ID уже существует<br>';
+                        errorMsg += '- Недостаточно газа для выполнения транзакции<br>';
+                        errorMsg += '- Проблема с форматом данных';
+                    }
+                    
+                    $('#createRecordResult').html(errorMsg);
+                }
+            });
+
+            $('#signRecord').click(async function () {
+                try {
+                    if (!currentAccount) {
+                        $('#signRecordResult').text('Аккаунт не выбран');
+                        return;
+                    }
+
+                    const id = $('#signRecordId').val();
+                    const amountEth = $('#signAmount').val();
+                    const amountWei = amountEth ? web3.utils.toWei(amountEth, 'ether') : '0';
+
+                    if (!id) {
+                        $('#signRecordResult').text('Введите ID записи');
+                        return;
+                    }
+
+                    // Получаем адреса из контракта
+                    const hospital = await insuranceContract.methods.hospital().call();
+                    const insurer = await insuranceContract.methods.insurer().call();
+
+                    console.log("Hospital:", hospital);
+                    console.log("Insurer:", insurer);
+                    console.log("Current account:", currentAccount);
+                    console.log("Amount to send:", amountEth, "ETH (", amountWei, "Wei)");
+
+                    if (currentAccount.toLowerCase() !== hospital.toLowerCase() && 
+                        currentAccount.toLowerCase() !== insurer.toLowerCase()) {
+                        $('#signRecordResult').html(`Только больница (${hospital.slice(0, 8)}...) или страховщик (${insurer.slice(0, 8)}...) могут подписывать записи.<br>Ваш аккаунт: ${currentAccount}`);
+                        return;
+                    }
+
+                    // Перед вызовом проверим, существует ли запись
+                    const record = await insuranceContract.methods.all_record(id).call();
+                    if (!record.isValue) {
+                        $('#signRecordResult').text('Запись с таким ID не найдена');
+                        return;
+                    }
+
+                    // Проверяем, подписывал ли уже этот аккаунт запись
+                    if (record.signatureCount >= 2) {
+                        $('#signRecordResult').text('Запись уже имеет максимальное количество подписей (2/2)');
+                        return;
+                    }
+
+                    $('#signRecordResult').html(`
+                        <div class="alert alert-info">
+                            Отправка транзакции... 
+                            ${amountWei !== '0' ? `<br>Сумма: ${amountEth} ETH (${amountWei} Wei)` : ''}
+                        </div>
+                    `);
+
+                    const result = await insuranceContract.methods.signRecord(id).send({ 
+                        from: currentAccount,
+                        value: amountWei,
+                        gas: 300000
+                    });
+                    
+                    console.log("Результат транзакции:", result);
+                    
+                    // Обновляем информацию о записи
+                    const updatedRecord = await insuranceContract.methods.all_record(id).call();
+                    
+                    let successMsg = 'Запись успешно подписана!';
+                    if (updatedRecord.signatureCount >= 2) {
+                        successMsg += '<br><strong>Запись полностью подписана (2/2)!</strong>';
+                        if (amountWei !== '0') {
+                            successMsg += '<br>Средства были отправлены на адрес больницы.';
+                        }
+                    } else {
+                        successMsg += `<br>Всего подписей: ${updatedRecord.signatureCount}/2`;
+                        if (amountWei !== '0') {
+                            successMsg += '<br>Средства будут отправлены на адрес больницы после получения второй подписи.';
+                        }
+                    }
+                    
+                    $('#signRecordResult').html(`<div class="alert alert-success">${successMsg}</div>`);
+                    await refreshContractBalance();
+                } catch (error) {
+                    console.error("Полная ошибка:", error);
+                    
+                    let errorMsg = `Ошибка: ${error.message}`;
+                    
+                    if (error.message.includes("0x")) {
+                        errorMsg += '<br><br>Возможные причины:<br>';
+                        errorMsg += '- Запись уже была подписана вами<br>';
+                        errorMsg += '- Недостаточно ETH на балансе<br>';
+                        errorMsg += '- Недостаточно газа для выполнения транзакции';
+                    }
+                    
+                    $('#signRecordResult').html(`<div class="alert alert-danger">${errorMsg}</div>`);
+                    console.error(error);
+                }
+            });
+
+            $('#viewRecord').click(async function () {
+                try {
+                    if (!currentAccount) {
+                        $('#signRecordResult').text('Аккаунт не выбран');
+                        return;
+                    }
+
+                    const id = $('#signRecordId').val();
+                    if (!id) {
+                        $('#signRecordResult').text('Введите ID записи');
+                        return;
+                    }
+
+                    const record = await insuranceContract.methods.all_record(id).call({ from: currentAccount });
+
+                    if (!record.isValue) {
+                        $('#signRecordResult').text('Запись с таким ID не найдена');
+                        return;
+                    }
+
+                    const result = `
+                        <strong>ID:</strong> ${record.ID}<br>
+                        <strong>Процедура:</strong> ${record.Name}<br>
+                        <strong>Дата:</strong> ${record.date}<br>
+                        <strong>Стоимость:</strong> ${record.price} Wei<br>
+                        <strong>Создатель:</strong> ${record.Addr.slice(0, 6)}...${record.Addr.slice(-4)}<br>
+                        <strong>Подписи:</strong> ${record.signatureCount}/2
+                    `;
+
+                    $('#signRecordResult').html(result);
+                } catch (error) {
+                    $('#signRecordResult').text(`Ошибка: ${error.message}`);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
