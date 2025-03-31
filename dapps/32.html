@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>32</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container min-vh-100 d-flex align-items-center justify-content-center">
+        <div class="position-fixed bottom-0 end-0 p-3">
+            <button class="btn btn-outline-primary rounded-circle" type="button" data-bs-toggle="modal"
+                data-bs-target="#settingsModal" style="width: 3rem; height: 3rem;">
+                <i class="bi bi-gear"></i>
+            </button>
+        </div>
+
+        <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="settingsModalLabel">Адрес контракта</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="contractAddress" class="form-label">MyCoin</label>
+                            <input type="text" class="form-control" id="contractAddress">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="updateAddress">Обновить и сохранить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-100">
+            <div class="row mb-4">
+                <div class="col-12 text-center">
+                    <h1 class="display-4 mb-0">Кошелек MyCoin</h1>
+                    <p class="lead text-muted">Управление вашими токенами MYC</p>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header d-flex align-items-center justify-content-center" style="height: 80px;">
+                            <h5 class="mb-0 text-center">Инициализация монеты</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="alert alert-info">
+                                Эта функция инициализирует монету и зачисляет 1000 токенов на ваш счет.
+                            </div>
+                            <div id="initializeResult" class="my-3"></div>
+                            <button class="btn btn-primary w-100 mt-auto" id="initializeCoin">Инициализировать</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header d-flex align-items-center justify-content-center" style="height: 80px;">
+                            <h5 class="mb-0 text-center">Проверка баланса</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="mt-auto">
+                                <div class="mb-3">
+                                    <label for="balanceAddress" class="form-label">Адрес кошелька:</label>
+                                    <input type="text" class="form-control" id="balanceAddress" placeholder="0x...">
+                                </div>
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between">
+                                        <span>Общее количество:</span>
+                                        <span id="totalSupply">-</span>
+                                    </div>
+                                </div>
+                                <div id="balanceResult" class="my-3"></div>
+                            </div>
+                            <button class="btn btn-primary w-100 mt-auto" id="checkBalance">Проверить баланс</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header d-flex align-items-center justify-content-center" style="height: 80px;">
+                            <h5 class="mb-0 text-center">Перевод монет</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="mt-auto">
+                                <div class="mb-3">
+                                    <label for="transferTo" class="form-label">Адрес получателя:</label>
+                                    <input type="text" class="form-control" id="transferTo" placeholder="0x...">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="transferAmount" class="form-label">Количество:</label>
+                                    <input type="number" class="form-control" id="transferAmount" min="1">
+                                </div>
+                                <div id="transferResult" class="my-3"></div>
+                            </div>
+                            <button class="btn btn-primary w-100 mt-auto" id="transferCoins">Перевести</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <div class="card shadow-sm">
+                        <div class="card-header d-flex align-items-center justify-content-center">
+                            <h5 class="mb-0 text-center">Сменить аккаунт</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Текущий аккаунт:</label>
+                                        <input type="text" class="form-control" id="currentAccount" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="newAccount" class="form-label">Новый аккаунт:</label>
+                                        <select class="form-select" id="newAccount">
+                                            <option value="">Выберите аккаунт</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="switchAccountResult" class="my-3"></div>
+                            <button class="btn btn-primary" id="switchAccount">Сменить аккаунт</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+    <script>
+        let coinContract;
+        let settingsModal;
+        let currentAccount;
+        let web3;
+
+        function loadAddress() {
+            const savedAddress = localStorage.getItem('contractAddress');
+            if (savedAddress) {
+                $('#contractAddress').val(savedAddress);
+                return savedAddress;
+            }
+            return null;
+        }
+
+        function saveAddress() {
+            const address = $('#contractAddress').val();
+            localStorage.setItem('contractAddress', address);
+        }
+
+        async function updateTotalSupply() {
+            try {
+                if (!coinContract) return;
+                const supply = await coinContract.methods.totalSupply().call();
+                $('#totalSupply').text(supply);
+            } catch (error) {
+                console.error('Ошибка получения общего количества:', error);
+            }
+        }
+
+        async function init() {
+            try {
+                web3 = new Web3('http://localhost:8545');
+
+                const contractAddress = $('#contractAddress').val();
+                if (!contractAddress) {
+                    console.error('Адрес контракта не установлен');
+                    return;
+                }
+
+                coinContract = new web3.eth.Contract([
+                    {
+                        "anonymous": false,
+                        "inputs": [
+                            {
+                                "indexed": true,
+                                "internalType": "address",
+                                "name": "_from",
+                                "type": "address"
+                            },
+                            {
+                                "indexed": true,
+                                "internalType": "address",
+                                "name": "_to",
+                                "type": "address"
+                            },
+                            {
+                                "indexed": false,
+                                "internalType": "uint256",
+                                "name": "_value",
+                                "type": "uint256"
+                            }
+                        ],
+                        "name": "Transfer",
+                        "type": "event"
+                    },
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "address",
+                                "name": "",
+                                "type": "address"
+                            }
+                        ],
+                        "name": "balance",
+                        "outputs": [
+                            {
+                                "internalType": "uint256",
+                                "name": "",
+                                "type": "uint256"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "address",
+                                "name": "_owner",
+                                "type": "address"
+                            }
+                        ],
+                        "name": "balanceOf",
+                        "outputs": [
+                            {
+                                "internalType": "uint256",
+                                "name": "",
+                                "type": "uint256"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [],
+                        "name": "coin",
+                        "outputs": [],
+                        "stateMutability": "nonpayable",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [],
+                        "name": "totalSupply",
+                        "outputs": [
+                            {
+                                "internalType": "uint256",
+                                "name": "",
+                                "type": "uint256"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [
+                            {
+                                "internalType": "address",
+                                "name": "_to",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "_value",
+                                "type": "uint256"
+                            }
+                        ],
+                        "name": "transfer",
+                        "outputs": [
+                            {
+                                "internalType": "bool",
+                                "name": "",
+                                "type": "bool"
+                            }
+                        ],
+                        "stateMutability": "nonpayable",
+                        "type": "function"
+                    }
+                ], contractAddress);
+
+                await loadAccounts();
+                await updateTotalSupply();
+            } catch (error) {
+                console.error('Ошибка инициализации:', error);
+            }
+        }
+
+        async function loadAccounts() {
+            try {
+                if (!web3) {
+                    console.error('Web3 не инициализирован');
+                    return;
+                }
+
+                const accounts = await web3.eth.getAccounts();
+                const select = $('#newAccount');
+                select.empty();
+                select.append('<option value="">Выберите аккаунт</option>');
+
+                accounts.forEach(account => {
+                    const shortAddress = account.slice(0, 6) + '...' + account.slice(-4);
+                    select.append(`<option value="${account}">${shortAddress}</option>`);
+                });
+
+                if (accounts.length > 0) {
+                    currentAccount = accounts[0];
+                    $('#currentAccount').val(currentAccount);
+                    $('#balanceAddress').val(currentAccount);
+                }
+            } catch (error) {
+                console.error('Ошибка загрузки аккаунтов:', error);
+            }
+        }
+
+        $(document).ready(async function () {
+            loadAddress();
+            await init();
+
+            settingsModal = new bootstrap.Modal(document.getElementById('settingsModal'));
+
+            $('#updateAddress').click(async function () {
+                saveAddress();
+                await init();
+                alert('Адрес контракта обновлен и сохранен!');
+                settingsModal.hide();
+            });
+
+            $('#switchAccount').click(async function () {
+                try {
+                    const newAccount = $('#newAccount').val();
+                    if (!newAccount) {
+                        $('#switchAccountResult').text('Выберите новый аккаунт');
+                        return;
+                    }
+                    currentAccount = newAccount;
+                    $('#currentAccount').val(currentAccount);
+                    $('#balanceAddress').val(currentAccount);
+                    $('#switchAccountResult').text('Аккаунт успешно изменен!');
+                } catch (error) {
+                    $('#switchAccountResult').text(`Ошибка: ${error.message}`);
+                }
+            });
+
+            $('#initializeCoin').click(async function () {
+                try {
+                    if (!currentAccount) {
+                        $('#initializeResult').text('Аккаунт не выбран');
+                        return;
+                    }
+
+                    $('#initializeResult').text('Инициализация монеты...');
+                    await coinContract.methods.coin().send({ from: currentAccount });
+                    $('#initializeResult').text('Монета успешно инициализирована!');
+                    await updateTotalSupply();
+                } catch (error) {
+                    $('#initializeResult').text(`Ошибка: ${error.message}`);
+                }
+            });
+
+            $('#checkBalance').click(async function () {
+                try {
+                    const address = $('#balanceAddress').val();
+                    if (!address) {
+                        $('#balanceResult').text('Введите адрес кошелька');
+                        return;
+                    }
+
+                    const balance = await coinContract.methods.balanceOf(address).call();
+                    $('#balanceResult').html(`<div class="alert alert-success">Баланс: ${balance} MYC</div>`);
+                } catch (error) {
+                    $('#balanceResult').html(`<div class="alert alert-danger">Ошибка: ${error.message}</div>`);
+                }
+            });
+
+            $('#transferCoins').click(async function () {
+                try {
+                    if (!currentAccount) {
+                        $('#transferResult').text('Аккаунт не выбран');
+                        return;
+                    }
+
+                    const to = $('#transferTo').val();
+                    const amount = $('#transferAmount').val();
+
+                    if (!to || !amount) {
+                        $('#transferResult').html(`<div class="alert alert-warning">Заполните все поля</div>`);
+                        return;
+                    }
+
+                    $('#transferResult').html(`<div class="alert alert-info">Выполняется перевод...</div>`);
+                    const result = await coinContract.methods.transfer(to, amount).send({ from: currentAccount });
+
+                    if (result) {
+                        $('#transferResult').html(`<div class="alert alert-success">Перевод успешно выполнен!</div>`);
+                    } else {
+                        $('#transferResult').html(`<div class="alert alert-danger">Перевод не выполнен. Проверьте баланс.</div>`);
+                    }
+                } catch (error) {
+                    $('#transferResult').html(`<div class="alert alert-danger">Ошибка: ${error.message}</div>`);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
