@@ -205,8 +205,8 @@ npx hardhat test
 <details>
 <summary>Практическая работа 32</summary>
 
-- [x] MyCoin.sol
-- [ ] MyCoin.html
+- [x] [32_MyCoin.sol](contracts/32_MyCoin.sol)
+- [x] [32.html](dapps/32.html)
 </details>
 
 <details>
